@@ -1,6 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Domain
+namespace Neverland.Domain
 {
     public class User
     {
@@ -8,20 +10,24 @@ namespace Domain
         public long Id { get; set; }
 
         [Required]
+        [MaxLength(255)]
         public string UserName { get; set; }
-
+        
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
+        public Role? Role { get; set; }
+
         [DataType(DataType.EmailAddress)]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
 
-        public Gender Gender { get; set; }
+        public Gender? Gender { get; set; }
 
 
-        public DateTime Birthday { get; set; }
+        [Column(TypeName = "Date")]
+        public DateTime? Birthday { get; set; }
 
     }
 }

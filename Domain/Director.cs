@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain
+namespace Neverland.Domain
 {
     public class Director
     {
@@ -20,12 +20,12 @@ namespace Domain
         [Required]
         public string Name { get; set; }
 
-        public string Country { get; set; }
+        public string? Country { get; set; }
 
-        public Gender Gender { get; set; }
+        public Gender? Gender { get; set; }
 
-        public int birthyear { get; set; }
+        public int? birthyear { get; set; }
 
-        public List<Movie> Movies { get; set; }
+        public List<Movie>? Movies { get; set; }
     }
 }

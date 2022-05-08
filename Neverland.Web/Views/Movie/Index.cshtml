@@ -1,0 +1,44 @@
+﻿@model Neverland.Web.ViewModels.MovieIndexViewModel
+@{
+    ViewData["Title"] = "Movies";
+}
+
+
+
+<html>
+    <head>
+        <title>Neverland</title>
+    </head>
+
+
+
+<body>
+<h1>Movie Index</h1>
+
+<table>
+    <tr>
+        <td>Name</td>
+        <td>Shoot</td>
+        <td>Language</td>
+        <td class="txt=left">Operation</td>
+    </tr>
+
+        @*@await foreach (var movie in Model.Movies)*@
+        
+        @foreach (var movie in Model.Movies)
+        {
+            <tr>
+                <td>@movie.Name</td>
+                <td>@movie.ShootDate</td>
+                <td>@movie.Language</td>
+                <td class="txt-left">
+                    <a asp-action="Details" asp-route-Id="@movie.Id">Detail</a> &nbsp; 
+                    <a asp-controller="Home" asp-action="Edit"asp-route-id="@movie.Id">edit</a>
+                </td>
+            </tr>
+        }
+
+</table>
+
+</body>
+</html>

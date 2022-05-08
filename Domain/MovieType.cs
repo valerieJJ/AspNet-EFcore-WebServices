@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain
+namespace Neverland.Domain
 {
     public enum MovieType
     {
@@ -13,7 +13,8 @@ namespace Domain
         drama = 2,
         comedy = 3,
         romance = 4,
-        documentart = 5
+        documentart = 5,
+        criminal = 6
 
     }
 }

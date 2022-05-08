@@ -1,0 +1,27 @@
+﻿@model Neverland.Web.ViewModels.UserViewModel;
+@{
+    ViewData["Title"] = "Create";
+}
+<head>
+    <title> create page </title>
+</head>
+
+<body>
+    <h1>Create user</h1>
+
+    <form method="post">
+        @*<input type="text" name="name" value=""/>*@
+        <input placeholder="User Name" asp-for="UserName" />
+        <input placeholder="Password" asp-for="Password"/>
+        @*<input asp-for="Roles"/>*@
+        <input placeholder="Email" asp-for="Email"/>
+        <input placeholder="Birthday" asp-for="Birthday" type="date"/>
+        <select asp-for="Gender" asp-items="Html.GetEnumSelectList<Gender>()">
+            <option>
+
+            </option>
+        </select>
+        <button type="submit" name="save">submit</button>
+    </form>
+</body>
+
