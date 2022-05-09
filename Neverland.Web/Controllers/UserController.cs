@@ -113,10 +113,10 @@ namespace Neverland.Web.Controllers
         {
             Console.WriteLine("login: name={0}, pwd={1}", userViewModel.UserName, userViewModel.Password);
 
-            var user = await _context.Users.FindByNameAsync(userViewModel.UserName);
-            //var user = _context.Users
-                //.Where(_u => _u.UserName == userViewModel.UserName && _u.Password==userViewModel.Password)
-                //.FirstOrDefault();
+            //var user = await _context.Users.FindByNameAsync(userViewModel.UserName);
+            var user = _context.Users
+                .Where(_u => _u.UserName == userViewModel.UserName && _u.Password == userViewModel.Password)
+                .FirstOrDefault();
             if (user == null)
             {
                 Console.WriteLine("User Not Found: name={0}, pwd={1}", userViewModel.UserName, userViewModel.Password);
