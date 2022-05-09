@@ -1,18 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 using Neverland.Data;
 using Neverland.Domain;
 using Neverland.Web.Models;
 using Neverland.Web.ViewModels;
+using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Text;
 
 namespace Neverland.Web.Controllers
 {
     public class UserController : Controller
     {
         public readonly DataContext _context;
-        public UserController(DataContext context)
+        private readonly IDistributedCache _distributed;
+
+        public UserController(DataContext context, IDistributedCache distributed)
         {
             _context = context;
+            _distributed = distributed;
         }
 
         [HttpGet]
@@ -162,10 +168,17 @@ namespace Neverland.Web.Controllers
             if (user == null)
             {
                 Console.WriteLine("User Not Found: name={0}, pwd={1}", userViewModel.UserName, userViewModel.Password);
+
                 return RedirectToAction(nameof(Login), new { });
             }
             else
             {
+                string obj = JsonConvert.SerializeObject(user);
+                var options = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(300)); ;//设置过期时间
+                byte[] bytes = Encoding.UTF8.GetBytes(obj);
+                _distributed.Set("user_key", bytes, options);
+                Console.WriteLine("distributed.Get: {0}", _distributed.Get("user_key"));
+
                 return RedirectToAction(nameof(Account), new { username = user.UserName});
             }
             

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Neverland.Web.Models;
+using StackExchange.Redis;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace Neverland.Web.Controllers
 {
@@ -17,9 +19,12 @@ namespace Neverland.Web.Controllers
         {
             return View();
         }
-
+          
+        
         public IActionResult Privacy()
         {
+            /*string redisconn = "vj-azure.redis.cache.windows.net:6380,password=D8GfauBoTrW6L41wdNXEpSPIRqEYKNNv4AzCaDJx8TA=,ssl=True,abortConnect=False";*/
+
             return View();
         }
 
