@@ -6,6 +6,6 @@ namespace Neverland.Web.ViewModels
     {
         //public IAsyncEnumerable<Movie> Movies { get; set; }
 
-        public IEnumerable<Movie> Movies { get; set; } 
+        public IEnumerable<Movie> Movies { get; set; }
     }
 }

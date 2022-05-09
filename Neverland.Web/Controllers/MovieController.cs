@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Neverland.Data;
 using Neverland.Domain;
 using Neverland.Web.ViewModels;
+using System.Net.NetworkInformation;
+
 namespace Neverland.Web.Controllers
 {
     public class MovieController : Controller
@@ -25,11 +27,11 @@ namespace Neverland.Web.Controllers
 
             //var movies = await _context.Movies.ToListAsync();
 
-            var movies = _context.Movies.ToList(); 
+            var movies = _context.Movies.ToListAsync();
 
             var vm = new MovieIndexViewModel
             {
-                Movies = movies
+                Movies = movies.Result
             };
 
             return View(vm);
@@ -38,7 +40,7 @@ namespace Neverland.Web.Controllers
         // GET: MovieController/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var movieDs = _context.MovieDetails.ToList();
+            //var movieDs = _context.MovieDetails.ToListAsync();
            
             var movieDetail = _context.MovieDetails.Where(x => x.MovieId == id).FirstOrDefault();
             var movie = _context.Movies.Where(x => x.Id == id).FirstOrDefault();
@@ -52,7 +54,7 @@ namespace Neverland.Web.Controllers
         }
 
         // GET: MovieController/Create
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
             //_context.Actors.Add(new Actor
             //{
@@ -82,7 +84,8 @@ namespace Neverland.Web.Controllers
             _context.AddRange(movie, moviedetail);
             ////context.Users.Add(user1);
             ////context.Actors.Add(actor);
-            var count = _context.SaveChanges(); //在同一个事务里，针对它发生的变化，执行相应的sql语句，如果有一个执行失败就整体回滚
+            
+            await _context.SaveChangesAsync(); //在同一个事务里，针对它发生的变化，执行相应的sql语句，如果有一个执行失败就整体回滚
             //Console.WriteLine(count);
 
             return RedirectToAction(nameof(Index));
@@ -129,8 +132,50 @@ namespace Neverland.Web.Controllers
         }
 
         // GET: MovieController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
+            int failed = 0;
+            var tasks = new List<Task>();
+            String[] urls = { "www.adatum.com", "www.cohovineyard.com",
+                        "www.cohowinery.com", "www.northwindtraders.com",
+                        "www.contoso.com" };
+
+            foreach(var url in urls)
+            {
+                tasks.Add(Task.Run(() =>
+                {
+                    var png = new Ping();
+                    try
+                    {
+                        var reply = png.Send(url);
+                        if(!(reply.Status == IPStatus.Success))
+                        {
+                            Interlocked.Increment(ref failed);
+                            throw new TimeoutException($"unable to reach {url}");
+                        }
+                    }catch (Exception ex)
+                    {
+                        Interlocked.Increment(ref failed);
+                    }
+                }));
+            }
+
+            Task t = Task.WhenAll(tasks);
+
+            try
+            {
+                t.Wait();
+            }
+            catch (Exception ex) { }
+
+            if(t.Status == TaskStatus.RanToCompletion)
+            {
+                Console.WriteLine("All tasks finished");
+            }else if(t.Status == TaskStatus.Faulted)
+            {
+                Console.WriteLine($"{failed} tasks failed");
+            }
+
             return View();
         }
 

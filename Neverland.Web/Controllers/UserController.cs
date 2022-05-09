@@ -65,7 +65,40 @@ namespace Neverland.Web.Controllers
         [HttpGet]
         public IActionResult Edit()
         {
+        //    if (username == null)
+        //    {
+        //        return RedirectToAction(nameof(Error));
+        //    }
+            
+        //    User user = await _context.Users.FindAsync(username);
+
+        //    if (user == null)
+        //    {
+        //        return RedirectToAction(nameof(Error));
+        //    }
+
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(string username)
+        {
+            if (username==null)
+            {
+                return RedirectToAction(nameof (Error));
+            }
+            var userToUpdate = await _context.Users.FindAsync(username);
+
+            if (await TryUpdateModelAsync<User>(
+                  userToUpdate,
+                  "",
+                  u => u.UserName, u => u.Password, u => u.Email, u => u.Birthday))
+            {
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Account), new { username = username });
+            }
+            return RedirectToAction(nameof(Account), new { username = username });
+
         }
 
         [HttpGet]
@@ -76,12 +109,14 @@ namespace Neverland.Web.Controllers
 
 
         [HttpPost]
-        public IActionResult Login(UserViewModel userViewModel)
+        public async Task<IActionResult> Login(UserViewModel userViewModel)
         {
             Console.WriteLine("login: name={0}, pwd={1}", userViewModel.UserName, userViewModel.Password);
-            var user = _context.Users
-                .Where(_u => _u.UserName == userViewModel.UserName && _u.Password==userViewModel.Password)
-                .FirstOrDefault();
+
+            var user = await _context.Users.FindByNameAsync(userViewModel.UserName);
+            //var user = _context.Users
+                //.Where(_u => _u.UserName == userViewModel.UserName && _u.Password==userViewModel.Password)
+                //.FirstOrDefault();
             if (user == null)
             {
                 Console.WriteLine("User Not Found: name={0}, pwd={1}", userViewModel.UserName, userViewModel.Password);
