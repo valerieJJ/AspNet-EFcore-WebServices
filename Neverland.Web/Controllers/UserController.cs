@@ -63,41 +63,83 @@ namespace Neverland.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit()
+        public async Task<IActionResult> Edit(int uid)
         {
-        //    if (username == null)
-        //    {
-        //        return RedirectToAction(nameof(Error));
-        //    }
-            
-        //    User user = await _context.Users.FindAsync(username);
+            if (uid == null)
+            {
+                return RedirectToAction(nameof(Error));
+            }
 
-        //    if (user == null)
-        //    {
-        //        return RedirectToAction(nameof(Error));
-        //    }
+            User user = _context.Users.Where(_u => _u.Id == uid).FirstOrDefault();
 
-            return View();
+            if (user == null)
+            {
+                return RedirectToAction(nameof(Error));
+            }
+
+            UserViewModel vm = new UserViewModel
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Password = user.Password,
+                Email = user.Email,
+                Gender = user.Gender,
+                Birthday = user.Birthday,
+                Role = user.Role
+            };
+            ViewBag.Gender = user.Gender;
+            Console.WriteLine("Get user-id={0} name={1} gender={2}",user.Id, user.UserName, user.Gender);
+            return View(vm);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(string username)
+        public async Task<IActionResult> Edit(UserViewModel userViewModel)
         {
-            if (username==null)
+            string query = Request.Headers["id"];
+
+            var requestbody = Request.Body;
+
+            if (userViewModel == null)
             {
                 return RedirectToAction(nameof (Error));
             }
-            var userToUpdate = await _context.Users.FindAsync(username);
+            ViewBag.Gender = userViewModel.Gender;
+            var userid = ViewBag.userid;
+            var title = ViewData["Title"];
 
-            if (await TryUpdateModelAsync<User>(
-                  userToUpdate,
-                  "",
-                  u => u.UserName, u => u.Password, u => u.Email, u => u.Birthday))
+            var username = ViewBag.username;
+            Console.WriteLine("Post gender {0}", userViewModel.Gender);
+
+            User userToUpdate = null;
+            userToUpdate =_context.Users.Where(u => u.UserName== userViewModel.UserName).FirstOrDefault();
+            if(userToUpdate == null)
             {
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Account), new { username = username });
+                Console.WriteLine("user not found");
+                return RedirectToAction(nameof(Register));
             }
-            return RedirectToAction(nameof(Account), new { username = username });
+               
+
+            {
+                userToUpdate.UserName = (userViewModel.UserName == null) ? userToUpdate.UserName : userViewModel.UserName;
+                userToUpdate.Email = (userViewModel.Email==null)?userToUpdate.Email:userViewModel.Email;
+                userToUpdate.Gender = (userViewModel.Gender == null) ? userToUpdate.Gender : userViewModel.Gender;
+                userToUpdate.Birthday = (userViewModel.Birthday == null) ? userToUpdate.Birthday : userViewModel.Birthday;
+            }
+
+
+            _context.Update(userToUpdate);
+            //if (await TryUpdateModelAsync<User>(
+            //      userToUpdate,
+            //      "",
+            //      u => u.UserName, u => u.Password, u => u.Email, u => u.Birthday))
+            //{
+            //    await _context.SaveChangesAsync();
+            //    Console.WriteLine("Edit success");
+            //    return RedirectToAction(nameof(Account), new { username = userViewModel.UserName });
+            //}
+
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Account), new { username = userViewModel.UserName });
 
         }
 

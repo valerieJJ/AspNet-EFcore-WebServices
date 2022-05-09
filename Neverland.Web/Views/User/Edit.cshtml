@@ -1,62 +1,69 @@
 ﻿@model Neverland.Web.ViewModels.UserViewModel
 
-@{
-    ViewData["Title"] = "Editl";
+<h1>User Edit</h1>
+
+
+
+
+@using (Html.BeginForm("Edit", "User", FormMethod.Post))
+{
+    @*@Html.EditorForModel()*@
+
+
+    <table id="tblist">
+        <tr>
+            <td>User ID:</td>
+            <td>@Html.DisplayTextFor(model => model.Id)</td>
+            @*@ViewBag.id = @Model.Id*@
+            @*<td>@Html.TextBoxFor(model => model.Id)</td>*@
+            <!--使用htmlhelper的强类型方法直接从model中根据userID属性生成文本框-->
+
+        </tr>
+        <tr>
+            <td>User Name: </td>
+            @*<td>@Html.TextBox("txtName",(object)Model.T_User)</td>*@
+            <!--使用htmlhelper的强类型方法直接从model中根据user    
+            ID属性生成文本框-->
+            @*<td>@Html.DisplayTextFor(model => model.UserName)</td>*@
+            <td>@Html.TextBoxFor(model => model.UserName)</td>
+        </tr>
+        
+
+        <tr>
+            <td>Email: </td>
+            <td>@Html.TextBoxFor(model=>model.Email)</td>
+        </tr>
+        <tr>
+            <td>Gender: </td>
+            <!--使用强类型方法生成下拉框，并自动根据model属性里面的level值，设置下拉框的默认选项-->
+            <td>
+                <select asp-for="Gender"  asp-items="Html.GetEnumSelectList<Gender>()">
+                    <option>
+
+                    </option>
+                </select>
+            </td>
+            @*<td>@Html.DropDownListFor(model=>model.Gender, ViewBag.Gender as IEnumerable<SelectListItem>)</td>*@
+        </tr>
+        <tr>
+            <td>Birthday: </td>
+            @*<td>@Html.TextBox("txtName",(object)Model.UserID)</td>*@
+            <!--使用htmlhelper的强类型方法直接从model中根据userName属性生成文本框-->
+            @*<td>@Html.TextAreaFor(model=>model.Birthday)</td>*@
+            <td>
+                <input placeholder="Birthday" asp-for="Birthday" type="date"/>
+            </td>
+        </tr>
+        <tr>            
+            <td colspan="2">
+                <input type="submit" value="submit" />
+                <button>@Html.ActionLink("Cancel","Account","User") </button>
+            </td>
+        </tr>
+    </table>                    
 }
-
-<h1>Detail</h1>
-
-<div>
-    <h4>Edit UserViewModel</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UserName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UserName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Password)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Password)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Role)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Role)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Birthday)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Birthday)
-        </dd>
-        
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Gender)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Gender)
-        </dd>
-    </dl>
-</div>
-<div>
+<div>@*
     @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
     <a asp-action="Management">Back</a>
 </div>
+*@
