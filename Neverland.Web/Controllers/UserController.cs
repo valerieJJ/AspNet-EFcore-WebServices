@@ -174,9 +174,9 @@ namespace Neverland.Web.Controllers
             else
             {
                 string obj = JsonConvert.SerializeObject(user);
-                var options = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(300)); ;//设置过期时间
+                var options = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(3000)); ;//设置过期时间
                 byte[] bytes = Encoding.UTF8.GetBytes(obj);
-                _distributed.Set("user_key", bytes, options);
+                _distributed.Set("user_"+user.UserName, bytes, options);
                 Console.WriteLine("distributed.Get: {0}", _distributed.Get("user_key"));
 
                 return RedirectToAction(nameof(Account), new { username = user.UserName});

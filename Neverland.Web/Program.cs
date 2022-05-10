@@ -22,17 +22,10 @@ builder.Services.AddDbContext<DataContext>(
 //builder.Services.AddScoped<DbContext, DataContext>();
 
 string redisconn = configuration.GetConnectionString("Azure-Redis");
-string _instanceName = ""; //实例名称
-int _defaultDB = 0; //默认数据库           
-builder.Services.AddSingleton(new RedisHelper(redisconn, _instanceName, _defaultDB));
-
-
-//builder.Services.AddDistributedRedisCache(options =>
-//{
-//    options.Configuration = redisconn;
-
-//});
-
+builder.Services.AddDistributedRedisCache(optioins =>
+{
+    optioins.Configuration = redisconn;
+});
 //builder.Services.AddStackExchangeRedisExtensions<NewtonsoftSerializer>(redisConfiguration);
 
 //builder.Services.AddSingleton(new RedisHelper(_connectionString, _instanceName, _defaultDB));
