@@ -19,6 +19,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.1" />
     <PackageReference Include="StackExchange.Redis" Version="2.5.61" />
+    <PackageReference Include="Microsoft.Web.RedisSessionStateProvider" Version="4.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,4 +27,7 @@
     <ProjectReference Include="..\Domain\Neverland.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Microsoft.Web.RedisSessionStateProvider" />
+  </ItemGroup>
 </Project>

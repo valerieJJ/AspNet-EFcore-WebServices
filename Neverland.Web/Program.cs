@@ -1,4 +1,4 @@
-
+﻿
 using StackExchange.Redis;
 using Microsoft.EntityFrameworkCore;
 using Neverland.Data;
@@ -15,17 +15,27 @@ IConfigurationRoot configuration = builder.Configuration;
 //string mysqlconn = "Database=mydb; Data Source=vj-azure-mysql.mysql.database.azure.com; User Id=vj@vj-azure-mysql; Password=1998123Jy";
 string mysqlconn = configuration.GetConnectionString("Azure-MySql");
 builder.Services.AddDbContext<DataContext>(
-    options=>options.UseMySql(mysqlconn, MySqlServerVersion.AutoDetect(mysqlconn))
+    options => options.UseMySql(mysqlconn, MySqlServerVersion.AutoDetect(mysqlconn))
     //options => options.UseSqlServer("Data Source=localhost;Initial Catalog=MyDB;Integrated Security=True")
     );
 
 //builder.Services.AddScoped<DbContext, DataContext>();
+
 
 string redisconn = configuration.GetConnectionString("Azure-Redis");
 builder.Services.AddDistributedRedisCache(optioins =>
 {
     optioins.Configuration = redisconn;
 });
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(60);
+    options.Cookie.HttpOnly = true; // 设为httponly
+});
+
+
+
 //builder.Services.AddStackExchangeRedisExtensions<NewtonsoftSerializer>(redisConfiguration);
 
 //builder.Services.AddSingleton(new RedisHelper(_connectionString, _instanceName, _defaultDB));
@@ -44,6 +54,9 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+app.UseSession();
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
