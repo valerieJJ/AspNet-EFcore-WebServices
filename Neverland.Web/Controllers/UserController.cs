@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using Neverland.Data;
 using Neverland.Domain;
@@ -14,16 +15,24 @@ namespace Neverland.Web.Controllers
     {
         public readonly DataContext _context;
         private readonly IDistributedCache _distributed;
+        private readonly ILogger<UserController> _logger;
 
-        public UserController(DataContext context, IDistributedCache distributed)
+        public UserController(DataContext context, IDistributedCache distributed, ILogger<UserController> logger)
         {
             _context = context;
             _distributed = distributed;
+            _logger = logger;
         }
 
         [HttpGet]
         public IActionResult Account(string username)
         {
+
+            string userStr = HttpContext.Session.GetString("Login_User");
+            var user_sess = JsonConvert.DeserializeObject<User>(userStr);
+
+            _logger.LogInformation($"\n\n\nsession-id: {HttpContext.Session.Id}\n\n\n");
+
             var user = _context.Users.Where(u=>u.UserName == username).FirstOrDefault();
             if(user == null)
             {
@@ -161,7 +170,6 @@ namespace Neverland.Web.Controllers
         {
             Console.WriteLine("login: name={0}, pwd={1}", userViewModel.UserName, userViewModel.Password);
 
-            //var user = await _context.Users.FindByNameAsync(userViewModel.UserName);
             var user = _context.Users
                 .Where(_u => _u.UserName == userViewModel.UserName && _u.Password == userViewModel.Password)
                 .FirstOrDefault();
@@ -173,10 +181,14 @@ namespace Neverland.Web.Controllers
             }
             else
             {
-                string obj = JsonConvert.SerializeObject(user);
+                string user_json = JsonConvert.SerializeObject(user);
                 var options = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(3000)); ;//设置过期时间
-                byte[] bytes = Encoding.UTF8.GetBytes(obj);
+                byte[] bytes = Encoding.UTF8.GetBytes(user_json);
                 _distributed.Set("user_"+user.UserName, bytes, options);
+
+
+                HttpContext.Session.SetString("Login_User", user_json);
+
                 Console.WriteLine("distributed.Get: {0}", _distributed.Get("user_key"));
 
                 return RedirectToAction(nameof(Account), new { username = user.UserName});
