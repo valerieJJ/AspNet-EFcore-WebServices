@@ -65,9 +65,11 @@
 </div>
 <div>
     @Html.ActionLink("Edit", "Edit", new { uid = Model.UserViewModel.Id }) |
-    <a asp-controller="Home" asp-action="Index">Neverland</a>
-
+    <a asp-controller="User" asp-action="Logout">Logout</a>
 </div>
 
+<div>
+    <a asp-controller="Home" asp-action="Index">Neverland</a>
+</div>
 
 </body>

@@ -4,6 +4,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Neverland.Data;
 using Neverland.Domain;
 using Neverland.Web.Models;
+using Neverland.Web.Utils;
 using Neverland.Web.ViewModels;
 using Newtonsoft.Json;
 using System.Diagnostics;
@@ -25,6 +26,8 @@ namespace Neverland.Web.Controllers
         }
 
         [HttpGet]
+        [UserStatusFilterAttribute]
+        [UserIdentityFilter]
         public IActionResult Account(string username)
         {
 
@@ -34,6 +37,10 @@ namespace Neverland.Web.Controllers
             _logger.LogInformation($"\n\n\nsession-id: {HttpContext.Session.Id}\n\n\n");
 
             var user = _context.Users.Where(u=>u.UserName == username).FirstOrDefault();
+            if(user_sess == null)
+            {
+                return RedirectToAction(nameof(Login));
+            }
             if(user == null && user_sess!=null)
             {
                 user = user_sess;
@@ -41,7 +48,7 @@ namespace Neverland.Web.Controllers
             
             if(user == null )
             {
-                return RedirectToAction(nameof(Error));
+                return RedirectToAction(nameof(Login));
             }
             var userViewModel = new UserViewModel
             {
@@ -57,6 +64,8 @@ namespace Neverland.Web.Controllers
             {
                 UserViewModel = userViewModel
             };
+
+            //ViewBag.User = user;
             return View(accountViewModel);
         }
 
@@ -83,6 +92,7 @@ namespace Neverland.Web.Controllers
         }
 
         [HttpGet]
+        [UserStatusFilter]
         public async Task<IActionResult> Edit(int uid)
         {
             if (uid == null)
@@ -176,7 +186,6 @@ namespace Neverland.Web.Controllers
             {
                 return RedirectToAction(nameof(Account));
             }
-           
         }
 
 
@@ -209,6 +218,13 @@ namespace Neverland.Web.Controllers
                 return RedirectToAction(nameof(Account), new { username = user.UserName});
             }
             
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            HttpContext.Session.Remove("Login_User");
+            return RedirectToAction(nameof(Index), nameof(HomeController), new { });
         }
 
 

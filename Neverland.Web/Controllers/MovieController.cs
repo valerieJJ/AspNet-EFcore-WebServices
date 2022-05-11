@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Neverland.Data;
 using Neverland.Domain;
+using Neverland.Web.Utils;
 using Neverland.Web.ViewModels;
 using System.Net.NetworkInformation;
 
@@ -39,6 +40,7 @@ namespace Neverland.Web.Controllers
 
         // GET: MovieController/Details/5
         [HttpGet]
+        [MovieResourceFilterAttribute]
         public async Task<IActionResult> Details(int id)
         {
             //var movieDs = _context.MovieDetails.ToListAsync();
