@@ -26,15 +26,16 @@ namespace Neverland.Web.Controllers
         }
 
         [HttpGet]
-        [UserStatusFilterAttribute]
-        //[UserIdentityFilter]
+        [TypeFilter(typeof(LoginActionFilter))] //或：[ServiceFilter(typeof(UserActionFilter))]
+        //[UserResourceFilter]
         public IActionResult Account(string username)
         {
 
             string userStr = HttpContext.Session.GetString("Login_User");
             if(userStr == null)
             {
-                return RedirectToAction(nameof(Login));
+                return RedirectToAction(nameof(Error));
+                //return RedirectToAction(nameof(Login));
             }
             var user_sess = JsonConvert.DeserializeObject<User>(userStr);
 
@@ -70,6 +71,8 @@ namespace Neverland.Web.Controllers
             return View(accountViewModel);
         }
 
+        [HttpGet]
+        [TypeFilter(typeof(PermissionActionFilter))]
         public IActionResult Management()
         {
             var users = _context.Users.ToList();
@@ -89,11 +92,10 @@ namespace Neverland.Web.Controllers
             _context.Users.Remove(user);
             int cnt = _context.SaveChanges();
             Console.WriteLine("changed {0} rows", cnt);
-            return RedirectToAction(nameof(Management), new { });
+            return RedirectToAction(nameof(Index), "Home", new { });
         }
 
         [HttpGet]
-        [UserStatusFilter]
         public async Task<IActionResult> Edit(int uid)
         {
             if (uid == null)
@@ -175,6 +177,7 @@ namespace Neverland.Web.Controllers
         }
 
         [HttpGet]
+        //[TypeFilter(typeof(UserActionFilter))]
         public IActionResult Login()
         {
 
@@ -191,6 +194,7 @@ namespace Neverland.Web.Controllers
 
 
         [HttpPost]
+        //[TypeFilter(typeof(UserActionFilter))]
         public async Task<IActionResult> Login(UserViewModel userViewModel)
         {
             Console.WriteLine("login: name={0}, pwd={1}", userViewModel.UserName, userViewModel.Password);

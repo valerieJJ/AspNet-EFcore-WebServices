@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace Neverland.Web.Utils
 {
-    public class UserStatusFilterAttribute : Attribute, IResourceFilter
+    public class UserResourceFilterAttribute : Attribute, IResourceFilter
     {
         private static Dictionary<string, object> CacheDict = new Dictionary<string, object>();
 
@@ -16,12 +16,12 @@ namespace Neverland.Web.Utils
             if (CacheDict.ContainsKey(key))
             {
 
-                // 只要给context.Result赋值了，就会中断后面的执行，直接返回给调用方
-                context.Result = (IActionResult)CacheDict[key];
-                var actionResult = context.Result;
-                
+                var actionResult = (IActionResult)CacheDict[key];
                 if (!actionResult.GetType().Equals(typeof(RedirectToActionResult)))
                 {
+
+                    // 只要给context.Result赋值了，就会中断后面的执行，直接返回给调用方
+                    context.Result = (IActionResult)CacheDict[key];
                     ViewResult accountViewModel = (ViewResult)CacheDict[key];
                     if(accountViewModel != null)
                     {
