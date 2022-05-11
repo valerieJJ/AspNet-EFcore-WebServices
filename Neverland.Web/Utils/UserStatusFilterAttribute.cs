@@ -1,53 +1,78 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Neverland.Domain;
+using Neverland.Web.ViewModels;
 using Newtonsoft.Json;
 
 namespace Neverland.Web.Utils
 {
     public class UserStatusFilterAttribute : Attribute, IResourceFilter
     {
-        public void OnResourceExecuted(ResourceExecutedContext context)
-        {
-            string userStr = context.HttpContext.Session.GetString("Login_User");
-            User user = null;
-            if (userStr != null)
-            {
-                user = JsonConvert.DeserializeObject<User>(userStr);
-                var roleType = user.Role.GetType();
-                Console.WriteLine("role = {0}", user.Role);
-                var role = user.Role.ToString();
-
-                if (role == "admin")
-                {
-                    Console.WriteLine("\nAdmin OnResourceExecuted\n");
-                }
-                else
-                {
-                    Console.WriteLine("\nUser OnResourceExecuted\n");
-                }
-            }
-        }
+        private static Dictionary<string, object> CacheDict = new Dictionary<string, object>();
 
         public void OnResourceExecuting(ResourceExecutingContext context)
         {
-            string userStr = context.HttpContext.Session.GetString("Login_User");
-            User user = null;
-            if (userStr != null)
+            string key = "User";
+            if (CacheDict.ContainsKey(key))
             {
-                user = JsonConvert.DeserializeObject<User>(userStr);
-                var roleType = user.Role.GetType();
-                Console.WriteLine("role = {0}", user.Role);
-                var role = user.Role.ToString();
 
-                if (role == "admin")
+                // 只要给context.Result赋值了，就会中断后面的执行，直接返回给调用方
+                context.Result = (IActionResult)CacheDict[key];
+                var actionResult = context.Result;
+                
+                if (!actionResult.GetType().Equals(typeof(RedirectToActionResult)))
                 {
-                    Console.WriteLine("\nAdmin OnResourceExecuted\n");
+                    ViewResult accountViewModel = (ViewResult)CacheDict[key];
+                    if(accountViewModel != null)
+                    {
+                        AccountViewModel model = (AccountViewModel)accountViewModel.Model;
+
+                        var role = model.UserViewModel.Role.ToString();
+                        if (role == "admin")
+                        {
+                            Console.WriteLine("\nAdmin OnResourceExecuting\n");
+                        }
+                        else
+                        {
+                            Console.WriteLine("\nUser OnResourceExecuting\n");
+                        }
+                        Console.WriteLine($"\nOnResourceExecuted: {CacheDict[key]}\n");
+                    }
                 }
-                else
-                {
-                    Console.WriteLine("\nUser OnResourceExecuted\n");
-                }
+                    
             }
         }
+
+        public void OnResourceExecuted(ResourceExecutedContext context)
+        {
+            string key = "User";
+            var actionResult = context.Result;
+
+            if (!actionResult.GetType().Equals(typeof(RedirectToActionResult)))
+            {
+                CacheDict[key] = context.Result;
+
+                //ViewResult accountViewModel = (ViewResult) CacheDict[key];
+                //if(accountViewModel != null)
+                //{
+                //    AccountViewModel model = (AccountViewModel) accountViewModel.Model;
+
+                //    var role = model.UserViewModel.Role.ToString();
+
+                //    if (role == "admin")
+                //    {
+                //        Console.WriteLine("\nAdmin OnResourceExecuted\n");
+                //    }
+                //    else
+                //    {
+                //        Console.WriteLine("\nUser OnResourceExecuted\n");
+                //    }
+                //    Console.WriteLine($"\nOnResourceExecuted: {CacheDict[key]}\n");
+                //}
+
+                }
+
+            }
+        
     }
 }

@@ -27,20 +27,21 @@ namespace Neverland.Web.Controllers
 
         [HttpGet]
         [UserStatusFilterAttribute]
-        [UserIdentityFilter]
+        //[UserIdentityFilter]
         public IActionResult Account(string username)
         {
 
             string userStr = HttpContext.Session.GetString("Login_User");
+            if(userStr == null)
+            {
+                return RedirectToAction(nameof(Login));
+            }
             var user_sess = JsonConvert.DeserializeObject<User>(userStr);
 
             _logger.LogInformation($"\n\n\nsession-id: {HttpContext.Session.Id}\n\n\n");
 
             var user = _context.Users.Where(u=>u.UserName == username).FirstOrDefault();
-            if(user_sess == null)
-            {
-                return RedirectToAction(nameof(Login));
-            }
+
             if(user == null && user_sess!=null)
             {
                 user = user_sess;
@@ -224,7 +225,7 @@ namespace Neverland.Web.Controllers
         public async Task<IActionResult> Logout()
         {
             HttpContext.Session.Remove("Login_User");
-            return RedirectToAction(nameof(Index), nameof(HomeController), new { });
+            return RedirectToAction(nameof(Index),"Home", new { });
         }
 
 
