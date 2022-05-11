@@ -29,5 +29,9 @@
 
   <ItemGroup>
     <None Remove="Microsoft.Web.RedisSessionStateProvider" />
+    <None Remove="Utils\AsyncFilters\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Utils\AsyncFilters\" />
   </ItemGroup>
 </Project>
