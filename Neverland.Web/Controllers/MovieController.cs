@@ -38,20 +38,60 @@ namespace Neverland.Web.Controllers
         }
 
         // GET: MovieController/Details/5
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             //var movieDs = _context.MovieDetails.ToListAsync();
            
             var movieDetail = _context.MovieDetails.Where(x => x.MovieId == id).FirstOrDefault();
             var movie = _context.Movies.Where(x => x.Id == id).FirstOrDefault();
+            var movieScore = _context.MovieScores.Where(x=>x.MovieId == id).FirstOrDefault();
+            if(movieScore == null)
+            {
+                movieScore = new MovieScore
+                {
+                    MovieId = movie.Id,
+                    Score = 0.0
+                };
+            }
             
             var movieViewModel = new MovieViewModel
             {
                 Movie = movie,
-                MovieDetail = movieDetail
+                MovieDetail = movieDetail,
+                MovieScore = movieScore
             };
+
+            HttpContext.Session.SetString("MovieID", movie.Id.ToString());
             return View(movieViewModel);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Details (MovieViewModel movieViewModel)
+        {
+            Console.WriteLine("Modify movie score {0}", movieViewModel.MovieScore.Score);
+            int movieID = Int32.Parse(HttpContext.Session.GetString("MovieID"));
+            
+            MovieScore movieScore = _context.MovieScores.Where(m=>m.MovieId==movieID).FirstOrDefault();
+            if( movieScore == null)
+            {
+                _context.MovieScores.Add(new MovieScore
+                {
+                    Id = movieID,
+                    Score = movieViewModel.MovieScore.Score
+                });
+            }
+            else
+            {
+                movieScore.Score = movieViewModel.MovieScore.Score;
+                _context.MovieScores.Update(movieScore);
+            }
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Details));
+        }
+
+
+
 
         // GET: MovieController/Create
         public async Task<ActionResult> Create()

@@ -7,6 +7,8 @@ namespace Neverland.Web.ViewModels
 
         public MovieDetail MovieDetail { get; set; }
 
+        public MovieScore MovieScore { get; set; }
+
         //public IAsyncEnumerable<>
     }
 }

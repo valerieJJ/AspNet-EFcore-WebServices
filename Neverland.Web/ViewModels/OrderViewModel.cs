@@ -28,6 +28,9 @@ namespace Neverland.Web.ViewModels
         [Required]
         public int Payment { get; set; }
 
+        [Required]
+        public PaymentType PaymentType { get; set; }
+
 
     }
 }

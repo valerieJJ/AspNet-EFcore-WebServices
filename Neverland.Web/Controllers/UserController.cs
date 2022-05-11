@@ -34,7 +34,12 @@ namespace Neverland.Web.Controllers
             _logger.LogInformation($"\n\n\nsession-id: {HttpContext.Session.Id}\n\n\n");
 
             var user = _context.Users.Where(u=>u.UserName == username).FirstOrDefault();
-            if(user == null)
+            if(user == null && user_sess!=null)
+            {
+                user = user_sess;
+            }
+            
+            if(user == null )
             {
                 return RedirectToAction(nameof(Error));
             }
@@ -161,7 +166,17 @@ namespace Neverland.Web.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            return View();
+
+            string userStr = HttpContext.Session.GetString("Login_User");
+            _logger.LogInformation($"\n\nuserstr = {userStr}\n\n");
+            if (string.IsNullOrEmpty(userStr))
+            {
+                return View();
+            }else
+            {
+                return RedirectToAction(nameof(Account));
+            }
+           
         }
 
 

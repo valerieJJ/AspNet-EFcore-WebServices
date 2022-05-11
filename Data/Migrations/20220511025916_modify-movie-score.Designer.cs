@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Neverland.Data;
 
@@ -10,9 +11,10 @@ using Neverland.Data;
 namespace Neverland.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220511025916_modify-movie-score")]
+    partial class modifymoviescore
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -156,7 +158,7 @@ namespace Neverland.Data.Migrations
                     b.HasIndex("MovieId")
                         .IsUnique();
 
-                    b.ToTable("MovieScores");
+                    b.ToTable("MovieScore");
                 });
 
             modelBuilder.Entity("Neverland.Domain.Order", b =>
@@ -172,9 +174,6 @@ namespace Neverland.Data.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<int>("Payment")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PaymentType")
                         .HasColumnType("int");
 
                     b.Property<int>("Price")

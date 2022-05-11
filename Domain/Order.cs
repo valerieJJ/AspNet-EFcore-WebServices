@@ -26,5 +26,8 @@ namespace Neverland.Domain
 
         [Required]
         public int Payment { get; set; }
+
+        [Required]
+        public PaymentType PaymentType { get; set; }
     }
 }

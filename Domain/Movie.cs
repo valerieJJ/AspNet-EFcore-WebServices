@@ -34,5 +34,7 @@ namespace Neverland.Domain
         public List<Actor>? Actors { get; set; }
 
         public MovieDetail? MovieDetail { get; set; }
+
+        public MovieScore MovieScore { get; set; }
     }
 }

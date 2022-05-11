@@ -8,20 +8,16 @@ using System.Threading.Tasks;
 
 namespace Neverland.Domain
 {
-    public  class MovieDetail
+    public class MovieScore
     {
         [Key]
         public int Id { get; set; }
 
-        public string? Description { get; set; }
-
-        //[ForeignKey]
         public int MovieId { get; set; }
-
         public Movie Movie { get; set; }
 
-        public double Price { get; set; }
 
-
+        [Required]
+        public double Score { get; set; }
     }
 }

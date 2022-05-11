@@ -43,6 +43,11 @@ namespace Neverland.Data
                 .HasOne(e => e.MovieDetail)
                 .WithOne(e => e.Movie)
                 .HasForeignKey<MovieDetail>(d => d.MovieId);
+
+            modelBuilder.Entity<Movie>()
+                .HasOne(e => e.MovieScore)
+                .WithOne(e => e.Movie)
+                .HasForeignKey<MovieScore>(d => d.MovieId);
         }
 
         public DbSet<Actor> Actors { get; set; }
@@ -54,6 +59,8 @@ namespace Neverland.Data
         public DbSet<Director> Directors { get; set; }
 
         public DbSet<Order> Orders { get; set; }
+
+        public DbSet<MovieScore> MovieScores { get; set; }
 
 
         public DbSet<MovieDetail> MovieDetails { get; set; }

@@ -47,8 +47,21 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.MovieDetail.Description)
         </dd>
-    
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MovieScore.Score)
+        </dd>
     </dl>
+</div>
+<div>
+    <form method="post">
+        @*<input type="text" name="n" value=""/>*@
+        <input placeholder="Input score" type="text" asp-for="MovieScore.Score" value=0.0/>
+        <button type="submit" name="save">score</button>
+    </form>
+</div>
+
+
+<div>
         <a asp-controller="Order" asp-action="Create"asp-route-id="@Model.Movie.Id">Order create</a>
 
         <a asp-controller="Order" asp-action="Index"asp-route-id="@Model.Movie.Id">Order Index</a>
