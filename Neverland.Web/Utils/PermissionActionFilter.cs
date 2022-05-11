@@ -29,14 +29,14 @@ namespace Neverland.Web.Utils
             if (userStr == null)
             {
                 _ILogger.LogInformation($"\n\nppplease log in! url={context.HttpContext.Request.Path}");
-                var req = new RouteValueDictionary( new Dictionary<string, object>(){
-                                                            { "controller", "User" }
-                                                            , { "action", "Login" }
-                                                        }
-                                                   );
-                context.Result = new RedirectToRouteResult("default"
-                                                            , req
-                                                            , true);    //重定向
+                //var req = new RouteValueDictionary( new Dictionary<string, object>(){
+                //                                            { "controller", "User" }
+                //                                            , { "action", "Login" }
+                //                                        }
+                //                                   );
+                //context.Result = new RedirectToRouteResult("default"
+                //                                            , req
+                //                                            , true);    //重定向
             }
             else
             {
