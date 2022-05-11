@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Neverland.Domain
 {
-    [Serializable()]
+    //[Serializable()]
     public class User
     {
         [Key]
