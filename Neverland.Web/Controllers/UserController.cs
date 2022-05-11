@@ -5,6 +5,7 @@ using Neverland.Data;
 using Neverland.Domain;
 using Neverland.Web.Models;
 using Neverland.Web.Utils;
+using Neverland.Web.Utils.AsyncFilters;
 using Neverland.Web.ViewModels;
 using Newtonsoft.Json;
 using System.Diagnostics;
@@ -26,9 +27,11 @@ namespace Neverland.Web.Controllers
         }
 
         [HttpGet]
-        [TypeFilter(typeof(LoginActionFilter))] //或：[ServiceFilter(typeof(UserActionFilter))]
+        //[TypeFilter(typeof(AsyncLoginActionFilter))]
+        [TypeFilter(typeof(LoginActionFilter))]
+        //[TypeFilter(typeof(LoginActionFilter))] //或：[ServiceFilter(typeof(UserActionFilter))]
         //[UserResourceFilter]
-        public IActionResult Account(string username)
+        public async Task<IActionResult> Account(string username)
         {
 
             string userStr = HttpContext.Session.GetString("Login_User");
@@ -72,9 +75,10 @@ namespace Neverland.Web.Controllers
         }
 
         [HttpGet]
-        [TypeFilter(typeof(LoginActionFilter))]
+        [TypeFilter(typeof(AsyncLoginActionFilter))]
+        //[TypeFilter(typeof(LoginActionFilter))]
         [TypeFilter(typeof(PermissionActionFilter))]
-        public IActionResult Management()
+        public async Task<IActionResult> Management()
         {
             var users = _context.Users.ToList();
             Console.WriteLine("\n\nget users {0}\n\n", users.Count);
