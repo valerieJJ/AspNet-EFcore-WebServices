@@ -72,6 +72,7 @@ namespace Neverland.Web.Controllers
         }
 
         [HttpGet]
+        [TypeFilter(typeof(LoginActionFilter))]
         [TypeFilter(typeof(PermissionActionFilter))]
         public IActionResult Management()
         {
