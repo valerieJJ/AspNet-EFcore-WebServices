@@ -44,10 +44,11 @@ namespace Neverland.Web.Utils
         {
 
 
-            var result = JsonConvert.SerializeObject(context.Result);
+            //var result = JsonConvert.SerializeObject(context.Result);
             var controllerName = context.HttpContext.GetRouteValue("controller");
             var actionName = context.HttpContext.GetRouteValue("action");
-            _ILogger.LogInformation($"\nexecuted, controller:{controllerName}, action:{actionName}，result:{result}\n");
+            _ILogger.LogInformation($"\nexecuted, controller:{controllerName}, action:{actionName}\n");
+            //_ILogger.LogInformation($"result:{result}\n");
 
         }
     }

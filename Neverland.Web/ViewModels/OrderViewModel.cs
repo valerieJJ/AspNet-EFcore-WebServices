@@ -23,7 +23,7 @@ namespace Neverland.Web.ViewModels
         public DateTime OrderTime { get; set; }
 
         [Required]
-        public int Price { get; set; }
+        public double Price { get; set; }
 
         [Required]
         public int Payment { get; set; }
