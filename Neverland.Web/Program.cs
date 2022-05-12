@@ -12,7 +12,6 @@ builder.Services.AddControllersWithViews();
 
 IConfigurationRoot configuration = builder.Configuration;
 //string mysqlconn = "server=localhost;user=root;password=20031230;database=mydb";
-
 //string mysqlconn = "Database=mydb; Data Source=vj-azure-mysql.mysql.database.azure.com; User Id=vj@vj-azure-mysql; Password=1998123Jy";
 string mysqlconn = configuration.GetConnectionString("Azure-MySql");
 builder.Services.AddDbContext<DataContext>(
@@ -86,12 +85,13 @@ if (!app.Environment.IsDevelopment())
 
 app.UseSession();
 
-app.UseSwaggerUI();
-//app.UseSwaggerUI(options =>
-//{
-//    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-//    options.RoutePrefix = string.Empty;
-//});
+app.UseSwagger();
+//app.UseSwaggerUI();
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+    options.RoutePrefix = string.Empty;
+});
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
