@@ -15,13 +15,18 @@ namespace Neverland.Web.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
+        //[HttpGet]
         public IActionResult Index()
         {
             return View();
         }
 
-        [HttpGet]
+        public IActionResult Main()
+        {
+            return View();
+        }
+
+        //[HttpGet]
         public IActionResult Privacy()
         {
             /*string redisconn = "vj-azure.redis.cache.windows.net:6380,password=D8GfauBoTrW6L41wdNXEpSPIRqEYKNNv4AzCaDJx8TA=,ssl=True,abortConnect=False";*/
@@ -29,7 +34,7 @@ namespace Neverland.Web.Controllers
             return View();
         }
 
-        [HttpGet]
+        //[HttpGet]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
