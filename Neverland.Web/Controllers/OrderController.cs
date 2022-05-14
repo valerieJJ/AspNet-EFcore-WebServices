@@ -9,6 +9,8 @@ using Newtonsoft.Json;
 
 namespace Neverland.Web.Controllers
 {
+
+    //[Area("OrderController")]
     public class OrderController : Controller
     {
 

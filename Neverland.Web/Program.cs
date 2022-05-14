@@ -3,6 +3,8 @@ using StackExchange.Redis;
 using Microsoft.EntityFrameworkCore;
 using Neverland.Data;
 using Neverland.Web;
+using Microsoft.Data.SqlClient;
+using Microsoft.AspNetCore.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +13,6 @@ builder.Services.AddControllersWithViews();
 
 IConfigurationRoot configuration = builder.Configuration;
 //string mysqlconn = "server=localhost;user=root;password=20031230;database=mydb
-//string mysqlconn = configuration.GetConnectionString("Azure-MySql");
 string mysqlconn = configuration.GetConnectionString("ECS-MySql");
 builder.Services.AddDbContext<DataContext>(
     options => options.UseMySql(mysqlconn, MySqlServerVersion.AutoDetect(mysqlconn))
@@ -33,6 +34,7 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true; // 设为httponly
 });
 
+builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
 
@@ -40,8 +42,7 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    app.UseHsts(); // The default HSTS value is 30 days. You may want to change  https://aka.ms/aspnetcore-hsts.
 }
 
 app.UseSession();
@@ -53,9 +54,19 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.UseEndpoints(
+    endpoints =>
+    {
+        endpoints.MapControllerRoute(
+            name: "default",
+            pattern: "{controller=Home}/{action=Index}/{id?}"
+          );
+    });
+//app.MapControllerRoute(
+//    name: "Default",
+//    pattern: "{controller=Home}/{action=Index}/{id?}"
+// );
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+
 
 app.Run();

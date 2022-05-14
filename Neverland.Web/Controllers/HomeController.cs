@@ -6,6 +6,7 @@ using Microsoft.Extensions.Caching.Distributed;
 
 namespace Neverland.Web.Controllers
 {
+    //[Area("HomeController")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -15,7 +16,10 @@ namespace Neverland.Web.Controllers
             _logger = logger;
         }
 
-        //[HttpGet]
+        [HttpGet]
+        [Route("")]
+        [Route("Home")]
+        [Route("[controller]/[action]")]
         public IActionResult Index()
         {
             return View();

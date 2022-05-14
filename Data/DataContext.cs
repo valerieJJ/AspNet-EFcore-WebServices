@@ -48,6 +48,7 @@ namespace Neverland.Data
                 .HasOne(e => e.MovieScore)
                 .WithOne(e => e.Movie)
                 .HasForeignKey<MovieScore>(d => d.MovieId);
+
         }
 
         public DbSet<Actor> Actors { get; set; }

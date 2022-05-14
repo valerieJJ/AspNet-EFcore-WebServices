@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-using WebClient.Models;
-
-namespace WebClient.Controllers
+﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
+using Neverland.WebClient.Models;
+namespace Neverland.WebClient.Controllers
 {
+    //[Area("HomeController")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

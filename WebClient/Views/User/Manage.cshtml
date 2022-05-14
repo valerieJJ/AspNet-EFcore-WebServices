@@ -1,0 +1,45 @@
+﻿@model Neverland.Web.ViewModels.ManagementViewModel
+
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width"/>
+        <title>User Management Page</title>
+    </head>
+
+<body>
+    <h1>Users</h1>
+
+    <ul>
+        @foreach (var user in Model.Users)
+        {
+            <li>
+                @user.UserName @user.Gender (@user.Role) 
+       
+                @Html.ActionLink("Info", "Detail", new {username = user.UserName});
+                
+                @Html.ActionLink("DeleteUser", "Delete", new {username = user.UserName})
+                @*<a href="/User/Detail/@user.UserName">Detail</a>*@
+            </li>
+        }
+
+    </ul>
+
+<div>
+    <h4>IndexViewModel</h4>
+    <hr />
+    <dl class="row">
+    </dl>
+</div>
+<div>
+    <a asp-action="Create">create a user</a>
+</div>
+<div>
+    @*@Html.ActionLink("Edit", "Edit", new {}) |*@
+
+    @*<a asp-action="Management">Back to List</a>*@
+</div>
+
+</body>
+
+
+</html>

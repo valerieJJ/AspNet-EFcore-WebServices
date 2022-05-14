@@ -30,7 +30,6 @@
   <ItemGroup>
     <None Remove="Microsoft.Web.RedisSessionStateProvider" />
     <None Remove="Utils\AsyncFilters\" />
-    <None Remove="Swashbuckle.AspNetCore" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Utils\AsyncFilters\" />

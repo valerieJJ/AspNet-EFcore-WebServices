@@ -9,15 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App", "App\App.csproj", "{7
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Neverland.Data", "Data\Neverland.Data.csproj", "{E4D68E0A-8D92-4C61-BE3D-19D07FD3BE62}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Neverland.Web", "Neverland.Web\Neverland.Web.csproj", "{0150F7F7-ACC9-4F3C-A7B2-05ABB9D81664}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderService", "OrderService\OrderService.csproj", "{38199C22-7A51-4369-A4C2-2A1EEFE7BAE9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieService", "MovieService\MovieService.csproj", "{695F8D93-A1E7-4251-9B2C-E9E515CD508E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserService", "UserService\UserService.csproj", "{F60A0D50-7CCE-4BC2-AC49-2E385BD52F6E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebClient", "WebClient\WebClient.csproj", "{B237962B-3F76-4D12-8485-3408BD514B90}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebClient", "WebClient\WebClient.csproj", "{6EB1740C-0978-4CE4-8DBB-7F21735B37B8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +35,6 @@ Global
 		{E4D68E0A-8D92-4C61-BE3D-19D07FD3BE62}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4D68E0A-8D92-4C61-BE3D-19D07FD3BE62}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4D68E0A-8D92-4C61-BE3D-19D07FD3BE62}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0150F7F7-ACC9-4F3C-A7B2-05ABB9D81664}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0150F7F7-ACC9-4F3C-A7B2-05ABB9D81664}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0150F7F7-ACC9-4F3C-A7B2-05ABB9D81664}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0150F7F7-ACC9-4F3C-A7B2-05ABB9D81664}.Release|Any CPU.Build.0 = Release|Any CPU
 		{38199C22-7A51-4369-A4C2-2A1EEFE7BAE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{38199C22-7A51-4369-A4C2-2A1EEFE7BAE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38199C22-7A51-4369-A4C2-2A1EEFE7BAE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -53,10 +47,10 @@ Global
 		{F60A0D50-7CCE-4BC2-AC49-2E385BD52F6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F60A0D50-7CCE-4BC2-AC49-2E385BD52F6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F60A0D50-7CCE-4BC2-AC49-2E385BD52F6E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B237962B-3F76-4D12-8485-3408BD514B90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B237962B-3F76-4D12-8485-3408BD514B90}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B237962B-3F76-4D12-8485-3408BD514B90}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B237962B-3F76-4D12-8485-3408BD514B90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EB1740C-0978-4CE4-8DBB-7F21735B37B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EB1740C-0978-4CE4-8DBB-7F21735B37B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EB1740C-0978-4CE4-8DBB-7F21735B37B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EB1740C-0978-4CE4-8DBB-7F21735B37B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

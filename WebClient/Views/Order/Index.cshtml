@@ -1,0 +1,63 @@
+﻿@model Neverland.Web.ViewModels.OrderIndexViewModel
+@{
+    ViewData["Title"] = "Orders";
+}
+
+
+
+<html>
+<head>
+    <title>Neverland</title>
+</head>
+
+
+
+<body>
+    <h1>Order History</h1>
+
+    <table>
+        <tr>
+            <td>Order ID</td>
+            <td>Order Time</td>
+            <td>Movie Name</td>
+            <td>User Name</td>
+            <td>Price</td>
+            <td>Payment Amount</td>
+            <td>Payment Type</td>
+            <td class="txt=left">Details</td>
+            <td class="txt=left">Edit</td>
+            <td class="txt=left">Delete</td>
+        </tr>
+
+
+        @foreach (var order in Model.Orders)
+        {
+    <tr>
+        <td>@order.OrderId</td>
+        <td>@order.OrderTime</td>
+        <td>@order.Movie.Name</td>
+        <td>@order.User.UserName</td>
+        <td>@order.Price</td>
+        <td>@order.Payment</td>
+        <td>@order.PaymentType</td>
+
+        <td class="txt-left">
+            <a asp-action="Details" asp-route-Id="@order.OrderId">Details</a>
+        </td>
+
+        <td class="txt-left">
+            <a asp-controller="Order" asp-action="Edit" asp-route-Id="@order.OrderId">Edit</a>
+        </td>
+
+        <td class="txt-left">
+            <a asp-action="Delete" asp-route-Id="@order.OrderId">Delete</a>
+            @*&nbsp;
+            <a asp-controller="Movie" asp-action="Edit" asp-route-id="@movie.Id">edit</a>*@
+        </td>
+    </tr>
+        }
+
+    </table>
+
+</body>
+</html>
