@@ -9,6 +9,8 @@ using System.Net.NetworkInformation;
 
 namespace Neverland.Web.Controllers
 {
+
+    //[Area("MovieController")]
     public class MovieController : Controller
     {
         public readonly DataContext _context;

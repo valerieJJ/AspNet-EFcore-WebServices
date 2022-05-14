@@ -13,6 +13,12 @@ namespace Neverland.Domain
         public int OrderId { get; set; }
 
         [Required]
+        public long UserId { get; set; }
+
+        [Required]
+        public int MovieId { get; set; }
+
+        [Required]
         public User User { get; set; }
 
         [Required]
@@ -22,10 +28,10 @@ namespace Neverland.Domain
         public DateTime OrderTime { get; set; }
 
         [Required]
-        public int Price { get; set; }
+        public double Price { get; set; }
 
         [Required]
-        public int Payment { get; set; }
+        public double Payment { get; set; }
 
         [Required]
         public PaymentType PaymentType { get; set; }

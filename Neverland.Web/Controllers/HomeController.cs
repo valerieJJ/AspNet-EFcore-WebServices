@@ -6,6 +6,7 @@ using Microsoft.Extensions.Caching.Distributed;
 
 namespace Neverland.Web.Controllers
 {
+    //[Area("HomeController")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -16,12 +17,20 @@ namespace Neverland.Web.Controllers
         }
 
         [HttpGet]
+        [Route("")]
+        [Route("Home")]
+        [Route("[controller]/[action]")]
         public IActionResult Index()
         {
             return View();
         }
 
-        [HttpGet]
+        public IActionResult Main()
+        {
+            return View();
+        }
+
+        //[HttpGet]
         public IActionResult Privacy()
         {
             /*string redisconn = "vj-azure.redis.cache.windows.net:6380,password=D8GfauBoTrW6L41wdNXEpSPIRqEYKNNv4AzCaDJx8TA=,ssl=True,abortConnect=False";*/
@@ -29,7 +38,7 @@ namespace Neverland.Web.Controllers
             return View();
         }
 
-        [HttpGet]
+        //[HttpGet]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
