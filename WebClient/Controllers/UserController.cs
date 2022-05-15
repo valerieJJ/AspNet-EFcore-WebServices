@@ -13,10 +13,10 @@ using Neverland.Web.Utils;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Neverland.WebClient.Controllers
 {
-    //[Area("UserController")]
     public class UserController : Controller
     {
         public readonly DataContext _context;
@@ -35,19 +35,20 @@ namespace Neverland.WebClient.Controllers
         //[TypeFilter(typeof(LoginActionFilter))]
         //[TypeFilter(typeof(LoginActionFilter))] //或：[ServiceFilter(typeof(UserActionFilter))]
         //[UserResourceFilter]
+        //[Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "admin")]
+        [Authorize]
         public async Task<IActionResult> Account()
         {
-            string userStr = HttpContext.Session.GetString("Login_User");
-            if (userStr == null)
-            {
-                return RedirectToAction(nameof(Login));
-                //return RedirectToAction(nameof(Login));
-            }
-            var user = JsonConvert.DeserializeObject<User>(userStr);
+            //string userStr = HttpContext.Session.GetString("Login_User");
+            //if (userStr == null)
+            //{
+            //    return RedirectToAction(nameof(Login));
+            //}
+            //var user = JsonConvert.DeserializeObject<User>(userStr);
+            //_logger.LogInformation($"\n\n\nsession-id: {HttpContext.Session.Id}\n\n\n");
 
-            _logger.LogInformation($"\n\n\nsession-id: {HttpContext.Session.Id}\n\n\n");
-
-            //var user = _context.Users.Where(u => u.UserName == username).FirstOrDefault();
+            var username = HttpContext.User.Identity.Name;
+            var user = _context.Users.Where(u => u.UserName == username).FirstOrDefault();
 
             if (user == null)
             {
@@ -73,9 +74,8 @@ namespace Neverland.WebClient.Controllers
         }
 
         [HttpGet]
-        //[TypeFilter(typeof(AsyncLoginActionFilter))]
-        [TypeFilter(typeof(LoginActionFilter))]
-        [TypeFilter(typeof(PermissionActionFilter))]
+        //[TypeFilter(typeof(AsyncLoginActionFilter))]  //[TypeFilter(typeof(LoginActionFilter))]   //[TypeFilter(typeof(PermissionActionFilter))]
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "admin")]
         public async Task<IActionResult> Manage()
         {
             var users = _context.Users.ToList();
@@ -89,7 +89,8 @@ namespace Neverland.WebClient.Controllers
         }
 
         [HttpGet]
-        [TypeFilter(typeof(LoginActionFilter))]
+        //[TypeFilter(typeof(LoginActionFilter))]
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "admin")]
         public IActionResult Delete(string username)
         {
             var user = _context.Users.Where(u => u.UserName == username).FirstOrDefault();
@@ -100,7 +101,8 @@ namespace Neverland.WebClient.Controllers
         }
 
         [HttpGet]
-        [TypeFilter(typeof(LoginActionFilter))]
+        //[TypeFilter(typeof(LoginActionFilter))]
+        [Authorize]
         public async Task<IActionResult> Edit(int uid)
         {
             if (uid == null)
@@ -131,6 +133,7 @@ namespace Neverland.WebClient.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Edit(UserViewModel userViewModel)
         {
             string query = Request.Headers["id"];
@@ -184,10 +187,10 @@ namespace Neverland.WebClient.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-
-            string userStr = HttpContext.Session.GetString("Login_User");
-            _logger.LogInformation($"\n\nuserstr = {userStr}\n\n");
-            if (string.IsNullOrEmpty(userStr))
+            string userStr = HttpContext.User.Identity.Name;
+            string userStr2 = HttpContext.Session.GetString("Login_User");
+            _logger.LogInformation($"\n\nusername(redis) = {userStr2}, username(httpcontext) = {userStr} \n\n");
+            if (string.IsNullOrEmpty(userStr2) || string.IsNullOrEmpty(userStr))
             {
                 return View();
             }
@@ -195,6 +198,7 @@ namespace Neverland.WebClient.Controllers
             {
                 return RedirectToAction(nameof(Account));
             }
+            //return View();
         }
 
 
@@ -227,15 +231,16 @@ namespace Neverland.WebClient.Controllers
                 {
                     // Claim 是对被验证主体特征的一种表述
                     new Claim("UserId", user.Id.ToString())
+                    ,new Claim(ClaimTypes.Sid, user.Id.ToString())
                     ,new Claim(ClaimTypes.Role, ((Role)user.Role).ToString())
-                    ,new Claim(ClaimTypes.Role, "user")
+                    //,new Claim(ClaimTypes.Role, "user")
                     ,new Claim(ClaimTypes.Name, user.UserName)
                     //,new Claim(ClaimTypes.Email, (user.Email),
                     //new Claim("password", user.Password),
 
                 };
                 //ClaimsIdentity的持有者就是 ClaimsPrincipal
-                var identity = new ClaimsIdentity(claims, "Login"); 
+                var identity = new ClaimsIdentity(claims, "LoginIdentity"); 
                 //  一个ClaimsPrincipal可以持有多个ClaimsIdentity，就比如一个人既持有驾照，又持有护照.
                 ClaimsPrincipal userPrincipal = new ClaimsPrincipal(identity);
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme
@@ -246,7 +251,7 @@ namespace Neverland.WebClient.Controllers
                                             AllowRefresh = false}
                                         );
 
-                var userr = HttpContext.User;
+                var context_user = HttpContext.User;
 
                 Console.WriteLine("distributed.Get: {0}", _distributed.Get("user_key"));
 
@@ -256,10 +261,12 @@ namespace Neverland.WebClient.Controllers
         }
 
         [HttpGet]
-        [TypeFilter(typeof(LoginActionFilter))]
+        //[TypeFilter(typeof(LoginActionFilter))]
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
             HttpContext.Session.Remove("Login_User");
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction(nameof(Index), "Home", new { });
         }
 

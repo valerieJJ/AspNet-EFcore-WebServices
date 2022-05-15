@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Neverland.Data;
@@ -22,6 +24,7 @@ namespace Neverland.Web.Controllers
 
 
         // GET: MovieController
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             //var movies = _context.Movies
@@ -43,6 +46,7 @@ namespace Neverland.Web.Controllers
         // GET: MovieController/Details/5
         [HttpGet]
         [MovieResourceFilterAttribute]
+        [Authorize]
         public async Task<IActionResult> Details(int id)
         {
             //var movieDs = _context.MovieDetails.ToListAsync();
@@ -71,6 +75,7 @@ namespace Neverland.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Details (MovieViewModel movieViewModel)
         {
             Console.WriteLine("Modify movie score {0}", movieViewModel.MovieScore.Score);
@@ -99,6 +104,7 @@ namespace Neverland.Web.Controllers
 
         // GET: MovieController/Create
         [HttpGet]
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "admin")]
         public async Task<ActionResult> Create()
         {
             var actor = _context.Actors.Single(x => x.Name == "mike");
@@ -134,6 +140,8 @@ namespace Neverland.Web.Controllers
         // POST: MovieController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        //[Authorize]
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "admin")]
         public ActionResult Create(IFormCollection collction)
         {
             try
@@ -171,6 +179,7 @@ namespace Neverland.Web.Controllers
         }
 
         // GET: MovieController/Edit/5
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "admin")]
         public async Task<ActionResult> Edit(int id)
         {
             int failed = 0;
@@ -221,6 +230,8 @@ namespace Neverland.Web.Controllers
         // POST: MovieController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
+        //[Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "admin")]
         public ActionResult Edit(int id, IFormCollection collection)
         {
             try
@@ -242,6 +253,8 @@ namespace Neverland.Web.Controllers
         // POST: MovieController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
+        //[Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "admin")]
         public ActionResult Delete(int id, IFormCollection collection)
         {
             try
