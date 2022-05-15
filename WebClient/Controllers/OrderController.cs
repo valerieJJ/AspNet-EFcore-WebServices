@@ -133,9 +133,29 @@ namespace Neverland.WebClient.Controllers
         [HttpPost]
         //[TypeFilter(typeof(LoginActionFilter))]
         //[ValidateAntiForgeryToken]
-        public ActionResult Create(OrderViewModel orderViewModel)
+        public ActionResult Create(FormCollection form)
         {
-            Console.WriteLine("post create {0}", orderViewModel.ToString());
+            try
+            {
+                var order = new Order
+                {
+                    MovieId = Int32.Parse(form["movieid"]),
+                    Payment = Int32.Parse(form["payment"]),
+                    UserId = Int64.Parse(form["uid"]),
+
+                    OrderTime = DateTime.Parse(form["ordertime"]),
+
+                    Price = _context.MovieDetails.Where(m => m.MovieId == Int32.Parse(form["movieid"])).FirstOrDefault().Price,
+                    PaymentType = PaymentType.Alipay //Int32.Parse(form["paymenttype"])
+                };
+                _context.Add(order);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+
+            }
             return RedirectToAction(nameof(Index));
         }
 

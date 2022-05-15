@@ -18,7 +18,7 @@ builder.Services.AddDbContext<DataContext>(
 //builder.Services.AddScoped<DbContext, DataContext>();
 
 
-string redisconn = configuration.GetConnectionString("Azure-Redis");
+string redisconn = configuration.GetConnectionString("ECS-Redis");//"Azure-Redis"
 builder.Services.AddDistributedRedisCache(optioins =>
 {
     optioins.Configuration = redisconn;
