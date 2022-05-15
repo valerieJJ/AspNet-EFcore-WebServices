@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 using Neverland.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,6 +33,24 @@ builder.Services.AddSession(options =>
 
 builder.Services.AddEndpointsApiExplorer();
 
+// 鉴权配置
+{
+    builder.Services.AddAuthentication(option =>
+    {
+        // 选择基于cookie的方式鉴权
+        option.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        option.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        option.DefaultForbidScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        option.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        option.DefaultSignOutScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    }).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, option =>
+    {
+        // 如果没有找到用户信息-->鉴权失败-->授权也失败了-->跳转到指定的Action
+        option.LoginPath = "/User/Login";
+    });
+}
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -58,7 +77,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
+app.UseAuthentication();// 鉴权，获取用户信息
+app.UseAuthorization(); // 授权，判断是否放行请求
 
 app.MapControllerRoute(
     name: "default",

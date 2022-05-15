@@ -10,6 +10,9 @@ using Neverland.Web.ViewModels;
 using Newtonsoft.Json;
 using Neverland.WebClient.Models;
 using Neverland.Web.Utils;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
 
 namespace Neverland.WebClient.Controllers
 {
@@ -218,6 +221,32 @@ namespace Neverland.WebClient.Controllers
 
 
                 HttpContext.Session.SetString("Login_User", user_json);
+
+                //创建一个身份认证
+                var claims = new List<Claim>()
+                {
+                    // Claim 是对被验证主体特征的一种表述
+                    new Claim("UserId", user.Id.ToString())
+                    ,new Claim(ClaimTypes.Role, ((Role)user.Role).ToString())
+                    ,new Claim(ClaimTypes.Role, "user")
+                    ,new Claim(ClaimTypes.Name, user.UserName)
+                    //,new Claim(ClaimTypes.Email, (user.Email),
+                    //new Claim("password", user.Password),
+
+                };
+                //ClaimsIdentity的持有者就是 ClaimsPrincipal
+                var identity = new ClaimsIdentity(claims, "Login"); 
+                //  一个ClaimsPrincipal可以持有多个ClaimsIdentity，就比如一个人既持有驾照，又持有护照.
+                ClaimsPrincipal userPrincipal = new ClaimsPrincipal(identity);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme
+                                        , userPrincipal
+                                        , new AuthenticationProperties{
+                                            ExpiresUtc = DateTime.UtcNow.AddMinutes(30),
+                                            IsPersistent = false,
+                                            AllowRefresh = false}
+                                        );
+
+                var userr = HttpContext.User;
 
                 Console.WriteLine("distributed.Get: {0}", _distributed.Get("user_key"));
 

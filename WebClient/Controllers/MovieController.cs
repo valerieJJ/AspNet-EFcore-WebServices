@@ -124,7 +124,7 @@ namespace Neverland.Web.Controllers
             _context.AddRange(movie, moviedetail);
             //context.Users.Add(user1);
 
-            await _context.SaveChangesAsync(); //在同一个事务里，针对它发生的变化，执行相应的sql语句，如果有一个执行失败就整体回滚
+            //await _context.SaveChangesAsync(); //在同一个事务里，针对它发生的变化，执行相应的sql语句，如果有一个执行失败就整体回滚
             //Console.WriteLine(count);
 
             return RedirectToAction(nameof(Index));
