@@ -38,16 +38,23 @@ builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddAuthentication(option =>
     {
         // 选择基于cookie的方式鉴权
+        //option.DefaultAuthenticateScheme = "MyCookieAuthenticationScheme";
+        //option.DefaultChallengeScheme = "MyCookieAuthenticationScheme";
+        //option.DefaultSignInScheme = "MyCookieAuthenticationScheme";
+        //option.DefaultForbidScheme = "MyCookieAuthenticationScheme";
+        //option.DefaultSignOutScheme = "MyCookieAuthenticationScheme";
         option.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         option.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         option.DefaultForbidScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         option.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         option.DefaultSignOutScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     }).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, option =>
-    {
-        // 如果没有找到用户信息-->鉴权失败-->授权也失败了-->跳转到指定的Action
-        option.LoginPath = "/User/Login";
-    });
+        {
+            // 如果没有找到用户信息-->鉴权失败-->授权也失败了-->跳转到指定的Action
+            option.LoginPath = "/User/Login";
+            option.AccessDeniedPath = "/Home/AccessDenied";
+            //option.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
+        });
 }
 
 

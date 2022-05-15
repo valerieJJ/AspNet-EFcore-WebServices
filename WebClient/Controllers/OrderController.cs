@@ -9,6 +9,7 @@ using Neverland.Web.ViewModels;
 using Newtonsoft.Json;
 using Neverland.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Neverland.WebClient.Controllers
 {
@@ -16,7 +17,6 @@ namespace Neverland.WebClient.Controllers
     //[Area("OrderController")]
     public class OrderController : Controller
     {
-
         public readonly DataContext _context;
         private readonly IDistributedCache _distributed;
         private readonly ILogger<OrderController> _logger;
@@ -31,6 +31,7 @@ namespace Neverland.WebClient.Controllers
 
         // GET: OrderController
         [HttpGet]
+        [Authorize]
         public ActionResult Index()
         {
             var orders = _context.Orders.ToListAsync().Result;
@@ -54,6 +55,8 @@ namespace Neverland.WebClient.Controllers
         // GET: OrderController/Details/5
         [HttpGet]
         [Route("Order/Details/{id?}")]
+        [Authorize]
+        //[Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "user")]
         public IActionResult Details(int id)
         {
             //int oid = 
@@ -79,23 +82,26 @@ namespace Neverland.WebClient.Controllers
         //[TypeFilter(typeof(LoginActionFilter))]
         //[JsonResultFilter]
         //[TypeFilter(typeof(LoginActionFilter))]
+        //[Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "user")]
         [HttpGet]
         [Authorize]
-        public ActionResult Creating(int id)
+        public async Task<ActionResult> Creating(int id)
         {
             Console.WriteLine("create order: movie id={0}", id);
-            var userStr = HttpContext.Session.GetString("Login_User");
-            if (userStr == null)
-            {
-                return Redirect("/User/Login");    //重定向
-            }
-            var user = JsonConvert.DeserializeObject<User>(userStr);
-            var movie = _context.Movies.Where(m => m.Id == id).FirstOrDefault();
-            var movieDetail = _context.MovieDetails.Where(m => m.MovieId == id).FirstOrDefault();
+            //var userStr = HttpContext.Session.GetString("Login_User");
+            //var user = JsonConvert.DeserializeObject<User>(userStr);
+            var username = HttpContext.User.Identity.Name;
+            var user = _context.Users.Where(u => u.UserName == username).FirstOrDefaultAsync().Result;
+            //if (userStr == null)
+            //{
+            //    return Redirect("/User/Login");    //重定向
+            //}
+            var movie = _context.Movies.Where(m => m.Id == id).FirstOrDefaultAsync().Result;
+            var movieDetail = _context.MovieDetails.Where(m => m.MovieId == id).FirstOrDefaultAsync().Result;
 
             //var user = _context.Users.Where(u => u.Id == userr.Id).FirstOrDefault();
 
-            if(movieDetail==null)
+            if (movieDetail==null)
             {
                 movieDetail = new MovieDetail
                 {
@@ -114,18 +120,6 @@ namespace Neverland.WebClient.Controllers
                 OrderTime = DateTime.Now.ToLocalTime(),
                 PaymentType = PaymentType.wechat
             };
-            var order = new Order
-            {
-                MovieId = movie.Id,
-                UserId = user.Id,
-                OrderTime = orderViewModel.OrderTime,
-                Payment = orderViewModel.Payment,
-                PaymentType = orderViewModel.PaymentType,
-                Price = movie.MovieDetail.Price
-
-            };
-            //_context.Orders.Add(order);
-            //_context.SaveChanges();
             return View(orderViewModel);
         }
 
@@ -176,30 +170,10 @@ namespace Neverland.WebClient.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpGet]
-        public ActionResult Detail(int orderID)
-        {
-            var order = _context.Orders.Where(o => o.OrderId == orderID).FirstOrDefault();
-            var movie = _context.Movies.Where(m => m.Id == order.MovieId).FirstOrDefault();
-            var movieDetail = _context.MovieDetails.Where(m => m.MovieId == order.MovieId).FirstOrDefault();
-
-            var orderViewModel = new OrderViewModel
-            {
-                Movie = movie,
-                MovieDetail = movieDetail,
-                User = order.User,
-                Payment = order.Payment,
-                OrderTime = order.OrderTime,
-                PaymentType = order.PaymentType
-            };
-            _context.Remove(order);
-            _context.SaveChanges();
-            return View(orderViewModel);
-        }
-
 
         // GET: OrderController/Edit/5
         [HttpGet]
+        [Authorize]
         public ActionResult Edit(int id)
         {
             return View();
@@ -208,6 +182,7 @@ namespace Neverland.WebClient.Controllers
         // POST: OrderController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Edit(int id, IFormCollection collection)
         {
             try
@@ -231,22 +206,5 @@ namespace Neverland.WebClient.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // POST: OrderController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize]
-        public ActionResult Delete(int id, IFormCollection collection) //
-        {
-            try
-            {
-                _context.Remove(_context.Orders.Where(o => o.OrderId == id).FirstOrDefault());
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }
