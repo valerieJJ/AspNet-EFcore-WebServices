@@ -9,6 +9,10 @@
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.1" />
+    <PackageReference Include="StackExchange.Redis" Version="2.5.61" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="2.2.0" />
+    <PackageReference Include="Consul" Version="1.6.10.5" />
+    <PackageReference Include="Youshow.Ace.MicroService.Consul" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,5 +25,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Pomelo.EntityFrameworkCore.MySql" />
+    <None Remove="StackExchange.Redis" />
+    <None Remove="Microsoft.Extensions.Caching.Redis" />
+    <None Remove="Consul" />
+    <None Remove="Youshow.Ace.MicroService.Consul" />
   </ItemGroup>
 </Project>
