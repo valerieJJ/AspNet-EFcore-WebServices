@@ -233,7 +233,7 @@ namespace Neverland.WebClient.Controllers
         public ActionResult Delete(int id, IFormCollection collection)
         {
             try
-            {
+            { 
                 return RedirectToAction(nameof(Index));
             }
             catch
