@@ -11,91 +11,129 @@
 
     <div>
         <h4>Order history</h4>
+        <form method="post">
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.OrderId)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.OrderId)
+                    <input type="hidden" asp-for="OrderId" value="@Model.OrderId" placeholder="@Model.OrderId" />
+                </dd>
 
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.OrderId)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.OrderId)
-            </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.User.UserName)
 
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.User.UserName)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.User.UserName)
-            </dd>
+                    <input type="hidden" asp-for="User.Id" value="@Model.User.Id" placeholder="@Model.User.Id" />
+                    <input type="hidden" asp-for="User.UserName" value="@Model.User.UserName" placeholder="@Model.User.UserName" />
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.User.UserName)
+                </dd>
 
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.OrderTime)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.OrderTime)
-            </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.OrderTime)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.OrderTime)
+                    <input type="hidden" asp-for="OrderTime" value="@Model.OrderTime" placeholder="@Model.OrderTime" />
+                </dd>
 
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Movie.Name)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Movie.Name)
-            </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Movie.Name)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Movie.Name)
 
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Movie.ShootDate)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Movie.ShootDate)
-            </dd>
+                    <input type="hidden" asp-for="Movie.Id" value="@Model.Movie.Id" placeholder="@Model.Movie.Id" />
+                </dd>
 
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Movie.Language)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Movie.Language)
-            </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Movie.ShootDate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Movie.ShootDate)
+                </dd>
 
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Movie.Type)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Movie.Type)
-            </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Movie.Language)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Movie.Language)
+                </dd>
 
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Movie.Director)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Movie.Director)
-            </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Movie.Type)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Movie.Type)
+                </dd>
 
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Movie.MovieDetail.Price)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Movie.MovieDetail.Price)
-            </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Movie.Director)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Movie.Director)
+                </dd>
 
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Movie.MovieDetail.Description)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Movie.MovieDetail.Description)
-            </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Movie.MovieDetail.Description)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Movie.MovieDetail.Description)
+                </dd>
 
 
-        </dl>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.MovieDetail.Price)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.MovieDetail.Price)
+                    <input type="hidden" asp-for="MovieDetail.Price" value="@Model.MovieDetail.Price" placeholder="@Model.MovieDetail.Price" />
+                </dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Payment)
+                </dt>
+                <dd class="col-sm-10">
+                    @*@Html.DisplayFor(model => model.Payment)*@
+                    <input asp-for="Payment" value="@Model.Payment" placeholder="@Model.Payment" />
+                </dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.PaymentType)
+                </dt>
+                <dd class="col-sm-10">
+                    @*@Html.DisplayFor(model => model.PaymentType)*@
+                    <select asp-for="PaymentType" asp-items="Html.GetEnumSelectList<Neverland.Domain.PaymentType>()">
+                        <option>
+                        </option>
+                    </select>
+                </dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Email)
+                </dt>
+                <dd class="col-sm-10">
+                    <input asp-for="Email" value="@Model.Email" placeholder="@Model.Email" />
+                </dd>
+            </dl>
+
+            <button type="submit" name="save">submit</button>
+        </form>
     </div>
 
 
+
+
     @*<form method="post">
-    <input type="text" name="name" value=""/>
-    <input placeholder
-    <input placeholder="User Name" asp-for="User" />
-    <input placeholder="Password" asp-for="Password"/>
-    <input asp-for="Roles"/>
-    <input placeholder="Email" asp-for="User.Email"/>
-    <button type="submit" name="save">submit</button>
-    </form>*@
+        <input type="text" name="name" value=""/>
+        <input placeholder
+        <input placeholder="User Name" asp-for="User" />
+        <input placeholder="Password" asp-for="Password"/>
+        <input asp-for="Roles"/>
+        <input placeholder="Email" asp-for="User.Email"/>
+        <button type="submit" name="save">submit</button>
+        </form>*@
 </body>
 

@@ -67,7 +67,6 @@ namespace Neverland.WebClient.Controllers
                 Movie = movie,
                 MovieDetail = movieDetail,
                 User = user,
-                Price = order.Price,
                 Payment = order.Payment,
                 OrderTime = order.OrderTime,
                 PaymentType = order.PaymentType
@@ -109,7 +108,6 @@ namespace Neverland.WebClient.Controllers
                 Movie = movie,
                 MovieDetail = movieDetail,
                 User = user,
-                Price = movieDetail.Price,
                 Payment = 0.0,
                 OrderTime = DateTime.Now.ToLocalTime(),
                 PaymentType = PaymentType.wechat
@@ -133,29 +131,48 @@ namespace Neverland.WebClient.Controllers
         [HttpPost]
         //[TypeFilter(typeof(LoginActionFilter))]
         //[ValidateAntiForgeryToken]
-        public ActionResult Create(FormCollection form)
+        //public ActionResult Creating(IFormCollection form)
+
+        public ActionResult Creating(OrderViewModel orderViewModel)
         {
-            try
-            {
                 var order = new Order
                 {
-                    MovieId = Int32.Parse(form["movieid"]),
-                    Payment = Int32.Parse(form["payment"]),
-                    UserId = Int64.Parse(form["uid"]),
+                    MovieId = orderViewModel.Movie.Id,
+                    UserId = orderViewModel.User.Id,
 
-                    OrderTime = DateTime.Parse(form["ordertime"]),
-
-                    Price = _context.MovieDetails.Where(m => m.MovieId == Int32.Parse(form["movieid"])).FirstOrDefault().Price,
-                    PaymentType = PaymentType.Alipay //Int32.Parse(form["paymenttype"])
+                    OrderTime = orderViewModel.OrderTime,
+                    
+                    Price = orderViewModel.MovieDetail.Price, //_context.MovieDetails.Where(m => m.MovieId == orderViewModel.Movie.Id).FirstOrDefault().Price,
+                    
+                    Payment = orderViewModel.Payment,
+                    PaymentType = orderViewModel.PaymentType //Int32.Parse(form["paymenttype"])
                 };
-                _context.Add(order);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
 
-            }
+                _context.Add(order);
+            _context.SaveChanges();
+
+            //try
+            //{
+            //    var order = new Order
+            //    {
+
+            //        MovieId = Int32.Parse(form["movieid"]),
+            //        Payment = Int32.Parse(form["payment"]),
+            //        UserId = Int64.Parse(form["uid"]),
+
+            //        OrderTime = DateTime.Parse(form["ordertime"]),
+
+            //        Price = _context.MovieDetails.Where(m => m.MovieId == Int32.Parse(form["movieid"])).FirstOrDefault().Price,
+            //        PaymentType = PaymentType.Alipay //Int32.Parse(form["paymenttype"])
+            //    };
+            //    _context.Add(order);
+            //    _context.SaveChanges();
+            //    return RedirectToAction(nameof(Index));
+            //}
+            //catch
+            //{
+
+            //}
             return RedirectToAction(nameof(Index));
         }
 
@@ -168,10 +185,9 @@ namespace Neverland.WebClient.Controllers
 
             var orderViewModel = new OrderViewModel
             {
-                Movie = order.Movie,
-                MovieDetail = order.Movie.MovieDetail,
+                Movie = movie,
+                MovieDetail = movieDetail,
                 User = order.User,
-                Price =order.Price,
                 Payment = order.Payment,
                 OrderTime = order.OrderTime,
                 PaymentType = order.PaymentType
