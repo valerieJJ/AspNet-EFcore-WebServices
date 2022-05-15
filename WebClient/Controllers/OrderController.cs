@@ -8,6 +8,7 @@ using Neverland.Web.Utils;
 using Neverland.Web.ViewModels;
 using Newtonsoft.Json;
 using Neverland.Web.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Neverland.WebClient.Controllers
 {
@@ -77,8 +78,9 @@ namespace Neverland.WebClient.Controllers
         // GET: OrderController/Create
         //[TypeFilter(typeof(LoginActionFilter))]
         //[JsonResultFilter]
-        [HttpGet]
         //[TypeFilter(typeof(LoginActionFilter))]
+        [HttpGet]
+        [Authorize]
         public ActionResult Creating(int id)
         {
             Console.WriteLine("create order: movie id={0}", id);
@@ -122,20 +124,21 @@ namespace Neverland.WebClient.Controllers
                 Price = movie.MovieDetail.Price
 
             };
-            _context.Orders.Add(order);
-            _context.SaveChanges();
+            //_context.Orders.Add(order);
+            //_context.SaveChanges();
             return View(orderViewModel);
         }
 
         // POST: OrderController/Create
-        [HttpPost]
         //[TypeFilter(typeof(LoginActionFilter))]
         //[ValidateAntiForgeryToken]
         //public ActionResult Creating(IFormCollection form)
 
+        [HttpPost]
+        [Authorize]
         public ActionResult Creating(OrderViewModel orderViewModel)
         {
-                var order = new Order
+            var order = new Order
                 {
                     MovieId = orderViewModel.Movie.Id,
                     UserId = orderViewModel.User.Id,
@@ -148,18 +151,16 @@ namespace Neverland.WebClient.Controllers
                     PaymentType = orderViewModel.PaymentType //Int32.Parse(form["paymenttype"])
                 };
 
-                _context.Add(order);
+            _context.Add(order);
             _context.SaveChanges();
 
             //try
             //{
             //    var order = new Order
             //    {
-
             //        MovieId = Int32.Parse(form["movieid"]),
             //        Payment = Int32.Parse(form["payment"]),
             //        UserId = Int64.Parse(form["uid"]),
-
             //        OrderTime = DateTime.Parse(form["ordertime"]),
 
             //        Price = _context.MovieDetails.Where(m => m.MovieId == Int32.Parse(form["movieid"])).FirstOrDefault().Price,
@@ -171,7 +172,6 @@ namespace Neverland.WebClient.Controllers
             //}
             //catch
             //{
-
             //}
             return RedirectToAction(nameof(Index));
         }
@@ -222,18 +222,25 @@ namespace Neverland.WebClient.Controllers
 
         // GET: OrderController/Delete/5
 
+        [HttpGet]
+        [Authorize]
         public ActionResult Delete(int id)
         {
-            return View();
+            _context.Remove(_context.Orders.Where(o => o.OrderId == id).FirstOrDefault());
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: OrderController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        [Authorize]
+        public ActionResult Delete(int id, IFormCollection collection) //
         {
             try
-            { 
+            {
+                _context.Remove(_context.Orders.Where(o => o.OrderId == id).FirstOrDefault());
+
                 return RedirectToAction(nameof(Index));
             }
             catch
