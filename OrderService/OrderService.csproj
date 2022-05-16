@@ -4,15 +4,19 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <DockerComposeProjectPath>../docker-compose.dcproj</DockerComposeProjectPath>
+    <UserSecretsId>23e54d5b-33f3-4f21-be24-e114f07bbdf6</UserSecretsId>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Development' " />
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Production' " />
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.1" />
     <PackageReference Include="StackExchange.Redis" Version="2.5.61" />
     <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="2.2.0" />
-    <PackageReference Include="Consul" Version="1.6.10.5" />
     <PackageReference Include="Youshow.Ace.MicroService.Consul" Version="6.0.0" />
+    <PackageReference Include="Ocelot" Version="18.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,6 +25,8 @@
     <None Remove="Microsoft.Extensions.Caching.Redis" />
     <None Remove="Consul" />
     <None Remove="Youshow.Ace.MicroService.Consul" />
+    <None Remove="Ocelot" />
+    <None Remove="Properties\PublishProfiles\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Domain\Neverland.Domain.csproj">
@@ -29,5 +35,13 @@
     <ProjectReference Include="..\Data\Neverland.Data.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Dockerfile">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
 </Project>

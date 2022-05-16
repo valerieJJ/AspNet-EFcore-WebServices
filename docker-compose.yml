@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  orderservice:
+    image: ${DOCKER_REGISTRY-}orderservice
+    build:
+      context: .
+      dockerfile: OrderService/Dockerfile
