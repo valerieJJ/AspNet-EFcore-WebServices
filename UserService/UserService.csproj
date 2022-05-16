@@ -11,8 +11,8 @@
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.1" />
     <PackageReference Include="StackExchange.Redis" Version="2.5.61" />
     <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="2.2.0" />
-    <PackageReference Include="Consul" Version="1.6.10.5" />
     <PackageReference Include="Youshow.Ace.MicroService.Consul" Version="6.0.0" />
+    <PackageReference Include="Ocelot" Version="18.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,5 +29,6 @@
     <None Remove="Microsoft.Extensions.Caching.Redis" />
     <None Remove="Consul" />
     <None Remove="Youshow.Ace.MicroService.Consul" />
+    <None Remove="Ocelot" />
   </ItemGroup>
 </Project>

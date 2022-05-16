@@ -22,15 +22,15 @@ namespace OrderService.Controllers
         private static void RegisterServer(IConfiguration config)
         {
             string consulGroup = config["Consul:ConsulGroup"]; //"OrderService";
-            string ip = config["Consul:ip"]; //"192.168.43.99";
-            int port = Convert.ToInt32(config["Consul:port"]);
+            string ip = config["ip"]; //config["Consul:ip"]; //"192.168.43.99";
+            int port = Convert.ToInt32(config["port"]); //Convert.ToInt32(config["Consul:port"]);
 
             var serviceID = $"{consulGroup} {ip} {port}";
 
             var check = new AgentServiceCheck()
             {
                 Interval = TimeSpan.FromSeconds(10),
-                HTTP = $"http://localhost:{port}/health",
+                HTTP = $"http://{ip}:{port}/health",
                 Timeout = TimeSpan.FromSeconds(500),
                 DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(6)
             };
