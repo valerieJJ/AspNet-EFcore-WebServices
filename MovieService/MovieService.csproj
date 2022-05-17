@@ -30,5 +30,9 @@
     <None Remove="Consul" />
     <None Remove="Youshow.Ace.MicroService.Consul" />
     <None Remove="Ocelot" />
+    <None Remove="Utils\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Utils\" />
   </ItemGroup>
 </Project>

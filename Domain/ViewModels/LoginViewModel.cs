@@ -1,7 +1,7 @@
 ﻿using Neverland.Domain;
 using System.ComponentModel.DataAnnotations;
 
-namespace Neverland.Web.ViewModels
+namespace Neverland.Domain.ViewModels
 {
     public class LoginViewModel
     {

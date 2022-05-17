@@ -31,11 +31,6 @@ namespace Neverland.WebClient.Controllers
         }
 
         [HttpGet]
-        //[TypeFilter(typeof(AsyncLoginActionFilter))]
-        //[TypeFilter(typeof(LoginActionFilter))]
-        //[TypeFilter(typeof(LoginActionFilter))] //或：[ServiceFilter(typeof(UserActionFilter))]
-        //[UserResourceFilter]
-        //[Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "admin")]
         [Authorize]
         public async Task<IActionResult> Account()
         {
@@ -48,6 +43,8 @@ namespace Neverland.WebClient.Controllers
             //_logger.LogInformation($"\n\n\nsession-id: {HttpContext.Session.Id}\n\n\n");
 
             var username = HttpContext.User.Identity.Name;
+            if (username == null) username = "valerie";
+
             var user = _context.Users.Where(u => u.UserName == username).FirstOrDefault();
 
             if (user == null)
@@ -198,21 +195,21 @@ namespace Neverland.WebClient.Controllers
             {
                 return RedirectToAction(nameof(Account));
             }
-            //return View();
+            return View();
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> Login(UserViewModel userViewModel)
+        public async Task<IActionResult> Login(LoginViewModel loginViewModel)
         {
-            Console.WriteLine("login: name={0}, pwd={1}", userViewModel.UserName, userViewModel.Password);
+            Console.WriteLine("login: name={0}, pwd={1}", loginViewModel.UserName, loginViewModel.Password);
 
             var user = _context.Users
-                .Where(_u => _u.UserName == userViewModel.UserName && _u.Password == userViewModel.Password)
+                .Where(_u => _u.UserName == loginViewModel.UserName && _u.Password == loginViewModel.Password)
                 .FirstOrDefault();
             if (user == null)
             {
-                Console.WriteLine("User Not Found: name={0}, pwd={1}", userViewModel.UserName, userViewModel.Password);
+                Console.WriteLine("User Not Found: name={0}, pwd={1}", loginViewModel.UserName, loginViewModel.Password);
 
                 return RedirectToAction(nameof(Login), new { });
             }
@@ -255,7 +252,7 @@ namespace Neverland.WebClient.Controllers
 
                 Console.WriteLine("distributed.Get: {0}", _distributed.Get("user_key"));
 
-                return RedirectToAction(nameof(Account), new { username = user.UserName });
+                return RedirectToAction(nameof(Account));
             }
 
         }

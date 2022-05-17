@@ -24,20 +24,22 @@ namespace Neverland.Web.Controllers
 
 
         // GET: MovieController
+        [HttpGet]
         [Authorize]
         public async Task<IActionResult> Index()
         {
-            //var movies = _context.Movies
-            //    .Include(x=>x.MovieDetail)
-            //    .ToList();
+            var movies = _context.Movies
+                .Include(x => x.MovieDetail)
+                .ToList();
 
             //var movies = await _context.Movies.ToListAsync();
 
-            var movies = _context.Movies.ToListAsync();
+            //var movies = _context.Movies.ToListAsync();
 
             var vm = new MovieIndexViewModel
             {
-                Movies = movies.Result
+                Movies = movies
+                //Movies = movies.Result
             };
 
             return View(vm);

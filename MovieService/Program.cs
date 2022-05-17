@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Neverland.Data;
+using MovieService.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -61,6 +62,7 @@ if (app.Environment.IsDevelopment())
     //});
 }
 
+app.UseConsul();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

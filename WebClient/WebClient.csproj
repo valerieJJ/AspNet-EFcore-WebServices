@@ -21,23 +21,14 @@
     <PackageReference Include="StackExchange.Redis" Version="2.5.61" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\UserService\UserService.csproj">
-      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
-    </ProjectReference>
-    <ProjectReference Include="..\OrderService\OrderService.csproj">
-      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
-    </ProjectReference>
+    <Folder Include="Views\User\" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Data\Neverland.Data.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
     <ProjectReference Include="..\Domain\Neverland.Domain.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
-    <ProjectReference Include="..\MovieService\MovieService.csproj">
-      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\User\" />
   </ItemGroup>
 </Project>

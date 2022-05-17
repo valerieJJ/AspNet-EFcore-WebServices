@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Neverland.Domain;
-namespace Neverland.Web.ViewModels
+namespace Neverland.Domain.ViewModels
 {
     public class OrderViewModel
     {
