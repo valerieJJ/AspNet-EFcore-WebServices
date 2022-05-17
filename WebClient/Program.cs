@@ -31,7 +31,7 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true; // 设为httponly
 });
 
-builder.Services.AddEndpointsApiExplorer();
+//builder.Services.AddEndpointsApiExplorer();
 
 // 鉴权配置
 {
@@ -69,15 +69,6 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseSession();
-
-
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

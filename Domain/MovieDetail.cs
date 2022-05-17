@@ -18,7 +18,7 @@ namespace Neverland.Domain
         //[ForeignKey]
         public int MovieId { get; set; }
 
-        public Movie Movie { get; set; }
+        public Movie? Movie { get; set; }
 
         public double Price { get; set; }
 

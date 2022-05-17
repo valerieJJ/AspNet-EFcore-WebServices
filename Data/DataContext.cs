@@ -39,6 +39,16 @@ namespace Neverland.Data
             modelBuilder.Entity<Favorite>().HasKey(e => new { e.UserId, e.MovieId });
             modelBuilder.Entity<User>().HasIndex(u => u.UserName).IsUnique();
 
+            //modelBuilder.Entity<MovieDetail>()
+            //    .HasOne(e => e.MovieId)
+            //    .WithOne(e => e.Movie)
+            //    .HasForeignKey<Movie>(d => d.MovieId);
+
+            //modelBuilder.Entity<MovieDetail>()
+            //    .HasOne(e => e.Movie)
+            //    .WithOne(e => e.MovieDetail)
+            //    .HasForeignKey<Movie>(d => d.Id);
+
             modelBuilder.Entity<Movie>()
                 .HasOne(e => e.MovieDetail)
                 .WithOne(e => e.Movie)
@@ -47,6 +57,7 @@ namespace Neverland.Data
             modelBuilder.Entity<Movie>()
                 .HasOne(e => e.MovieScore)
                 .WithOne(e => e.Movie)
+
                 .HasForeignKey<MovieScore>(d => d.MovieId);
 
         }
