@@ -1,15 +1,14 @@
 ﻿using Consul;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 using Neverland.Data;
+using MovieService.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-
 
 //builder.Services.AddSingleton<IConsulClient>(c => new ConsulClient(
 //    cc =>
@@ -17,6 +16,11 @@ builder.Services.AddControllers();
 //        cc.Address = new Uri("http://localhost:8500");
 //    }));
 
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+//builder.Services.AddHealthChecks();
 
 
 IConfigurationRoot configuration = builder.Configuration;
@@ -40,12 +44,6 @@ builder.Services.AddSession(options =>
 });
 
 
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -53,19 +51,20 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-
-    //app.UseSwaggerUI(options =>
-    //{
-    //    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-    //    options.RoutePrefix = string.Empty;
-    //});
 }
 
+app.UseConsul();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapGet("/health", () =>
+{
+    return new OkResult();
+});
+
+//app.MapHealthChecks("/health");
 
 app.Run();
 

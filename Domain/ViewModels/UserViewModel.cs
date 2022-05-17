@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Neverland.Web.ViewModels
+namespace Neverland.Domain.ViewModels
 {
     public class UserViewModel
     {
