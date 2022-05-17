@@ -33,13 +33,11 @@ namespace Neverland.Web.Controllers
                 .ToList();
 
             //var movies = await _context.Movies.ToListAsync();
-
             //var movies = _context.Movies.ToListAsync();
 
             var vm = new MovieIndexViewModel
             {
-                Movies = movies
-                //Movies = movies.Result
+                Movies = movies //Movies = movies.Result
             };
 
             return View(vm);
@@ -102,8 +100,6 @@ namespace Neverland.Web.Controllers
         }
 
 
-
-
         // GET: MovieController/Create
         [HttpGet]
         [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "admin")]
@@ -130,19 +126,13 @@ namespace Neverland.Web.Controllers
             movie.MovieDetail = moviedetail;
 
             _context.AddRange(movie, moviedetail);
-            //context.Users.Add(user1);
-
             //await _context.SaveChangesAsync(); //在同一个事务里，针对它发生的变化，执行相应的sql语句，如果有一个执行失败就整体回滚
-            //Console.WriteLine(count);
 
             return RedirectToAction(nameof(Index));
-            //return View();
         }
 
-        // POST: MovieController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //[Authorize]
         [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "admin")]
         public ActionResult Create(IFormCollection collction)
         {
@@ -233,7 +223,6 @@ namespace Neverland.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        //[Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "admin")]
         public ActionResult Edit(int id, IFormCollection collection)
         {
             try
@@ -255,8 +244,7 @@ namespace Neverland.Web.Controllers
         // POST: MovieController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
-        //[Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "admin")]
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "admin")]
         public ActionResult Delete(int id, IFormCollection collection)
         {
             try

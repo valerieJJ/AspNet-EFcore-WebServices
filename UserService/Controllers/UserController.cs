@@ -49,7 +49,7 @@ public class UserController : ControllerBase
 
 
     [HttpGet]
-    [Authorize]
+    //[Authorize]
     public async Task<AccountViewModel> Account(string username)
     {
         //var username = HttpContext.User.Identity.Name;
@@ -78,7 +78,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "admin")]
+    //[Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "admin")]
     public async Task<ManagementViewModel> Manage()
     {
         var users = _context.Users.ToList();

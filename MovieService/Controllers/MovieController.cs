@@ -9,7 +9,7 @@ using System.Net.NetworkInformation;
 namespace MovieService.Controllers;
 
 [ApiController]
-[Route("[controller]/[action]")]
+[Route("api/[controller]/[action]")]
 public class MovieController : ControllerBase
 {
     private readonly ILogger<MovieController> _logger;
@@ -21,8 +21,18 @@ public class MovieController : ControllerBase
         _context = context;
     }
 
+
+
     [HttpGet]
-    private IEnumerable<Movie> GetMovies()
+    public async Task<IEnumerable<Movie>> Index()
+    {
+        var movies = _context.Movies.ToListAsync().Result;
+
+        return movies;
+    }
+
+    [HttpGet]
+    private IEnumerable<Movie> Query()
     {
         var movies = _context.Movies.ToArray();
         return movies;
@@ -46,33 +56,23 @@ public class MovieController : ControllerBase
         return movieViewModel;
     }
 
-    [HttpGet]
-    public async Task<IEnumerable<Movie>> Index()
-    {
-        //var movies = _context.Movies
-        //    .Include(x => x.MovieDetail)
-        //    .ToList();
-
-        //var movies = _context.Movies.ToListAsync().Result;
-
-        var movies = await _context.Movies
-            .Include(x => x.MovieDetail)
-            .ToListAsync();
-
-
-        return movies;
-    }
 
     // GET: MovieController/Details/5
     [HttpGet]
-    [MovieResourceFilterAttribute]
-    public async Task<MovieViewModel> Details(int id)
+    public MovieDetail GetDetail(int mid)
     {
-        //var movieDs = _context.MovieDetails.ToListAsync();
+        var movieDetail = _context.MovieDetails.Where(x => x.MovieId == mid).FirstOrDefault();
+        return movieDetail;
+    }
 
+    [HttpGet]
+    public Movie GetMovie(int id)
+    {
+        Movie movie = _context.Movies.Where(x => x.Id==id).FirstOrDefault();
         var movieDetail = _context.MovieDetails.Where(x => x.MovieId == id).FirstOrDefault();
-        var movie = _context.Movies.Where(x => x.Id == id).FirstOrDefault();
-        var movieScore = _context.MovieScores.Where(x => x.MovieId == id).FirstOrDefault();
+        movieDetail.Movie = null;
+
+        var movieScore = _context.MovieScores.Where(m=>m.MovieId==id).FirstOrDefault(); // _context.MovieScores.Where(x => x.MovieId == id).FirstOrDefault();
         if (movieScore == null)
         {
             movieScore = new MovieScore
@@ -81,6 +81,23 @@ public class MovieController : ControllerBase
                 Score = 0.0
             };
         }
+        movie.MovieScore = movieScore;
+        movieScore.Movie = null;
+        return movie;
+    }
+
+    // GET: MovieController/Details/5
+    [HttpGet]
+    [MovieResourceFilterAttribute]
+    public async Task<MovieViewModel> GetMovieViewModel(int id)
+    {
+        //var movieDs = _context.MovieDetails.ToListAsync();
+
+        Movie movie = _context.Movies.Where(x => x.Id == id).FirstOrDefault();
+        var movieDetail = _context.MovieDetails.Where(x => x.MovieId == id).FirstOrDefault();
+
+        var movieScore = _context.MovieScores.Where(m => m.MovieId == id).FirstOrDefault(); // _context.MovieScores.Where(x => x.MovieId == id).FirstOrDefault();
+
 
         var movieViewModel = new MovieViewModel
         {
@@ -89,7 +106,6 @@ public class MovieController : ControllerBase
             MovieScore = movieScore
         };
 
-        HttpContext.Session.SetString("MovieID", movie.Id.ToString());
         return movieViewModel;
     }
 
@@ -122,7 +138,7 @@ public class MovieController : ControllerBase
 
     // GET: MovieController/Create
     [HttpGet]
-    public async Task<ActionResult> Create()
+    public async Task<ActionResult> Creating()
     {
         var actor = _context.Actors.Single(x => x.Name == "mike");
 
