@@ -1,0 +1,26 @@
+﻿version: '3.1'
+
+services:
+  orderservice1:
+    image: orderservice
+    build:
+      context: .
+      dockerfile: OrderService/Dockerfile
+    ports:
+        - 2019:2009
+
+  orderservice2:
+    image: orderservice
+    build:
+      context: .
+      dockerfile: OrderService/Dockerfile
+    ports:
+        - 2029:2009
+
+  orderservice3:
+    image: orderservice
+    build:
+      context: .
+      dockerfile: OrderService/Dockerfile
+    ports:
+        - 2039:2009

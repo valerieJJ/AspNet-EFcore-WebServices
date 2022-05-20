@@ -54,8 +54,8 @@ builder.Services.AddSwaggerGen();
     }).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, option =>
     {
         // 如果没有找到用户信息-->鉴权失败-->授权也失败了-->跳转到指定的Action
-        option.LoginPath = "/User/Login";
-        option.AccessDeniedPath = "/User/Login";
+        option.LoginPath = "/api/User/Login";
+        option.AccessDeniedPath = "/api/User/Login";
     });
 }
 //string mysqlconn = "server=localhost;user=root;password=20031230;database=mydb";

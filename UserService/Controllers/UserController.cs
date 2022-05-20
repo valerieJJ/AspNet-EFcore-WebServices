@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 namespace UserService.Controllers;
 
 [ApiController]
-[Route("[controller]/[action]")]
+[Route("api/[controller]/[action]")]
 public class UserController : ControllerBase
 {
 

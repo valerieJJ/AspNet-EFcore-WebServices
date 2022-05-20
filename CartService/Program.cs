@@ -1,8 +1,4 @@
-﻿using GatewayService.Controllers;
-using Ocelot.DependencyInjection;
-using Ocelot.Middleware;
-
-var builder = WebApplication.CreateBuilder(args);
+﻿var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
@@ -11,7 +7,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddOcelot();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -21,8 +16,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseOcelot();
-app.UseConsul();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

@@ -12,7 +12,7 @@ using Neverland.Domain;
 namespace MovieService.Controllers
 {
     [ApiController]
-    [Route("[controller]/[action]")]
+    [Route("api/[controller]/[action]")]
     public class ValuesController : ControllerBase
     {
         private readonly ILogger<ValuesController> _logger;

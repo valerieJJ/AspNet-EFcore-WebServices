@@ -1,10 +1,10 @@
 ﻿using System;
 using Consul;
 
-namespace MovieService.Controllers
+namespace GatewayService.Controllers
 {
-	public static class ConsulManager
-	{
+    public static class ConsulManager
+    {
         public static IConsulClient _consulClient = null;
 
         public static void UseConsul(this WebApplication app)
@@ -27,17 +27,17 @@ namespace MovieService.Controllers
 
             var serviceID = $"{consulGroup} {ip} {port}";
 
-            var check = new AgentServiceCheck()
-            {
-                Interval = TimeSpan.FromSeconds(10),
-                HTTP = $"http://{ip}:{port}/api/health",
-                Timeout = TimeSpan.FromSeconds(500),
-                DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(6)
-            };
+            //var check = new AgentServiceCheck()
+            //{
+            //    Interval = TimeSpan.FromSeconds(10),
+            //    HTTP = $"http://{ip}:{port}/api/health",
+            //    Timeout = TimeSpan.FromSeconds(500),
+            //    DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(6)
+            //};
 
             var register = new AgentServiceRegistration
             {
-                Check = check,
+                //Check = check,
                 Address = ip,
                 ID = serviceID,
                 Name = consulGroup,

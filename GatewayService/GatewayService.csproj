@@ -9,11 +9,15 @@
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="Ocelot" Version="18.0.0" />
+    <PackageReference Include="Consul" Version="1.6.10.5" />
+    <PackageReference Include="Ocelot.Provider.Consul" Version="18.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="Ocelot" />
     <None Remove="Controllers\" />
+    <None Remove="Consul" />
+    <None Remove="Ocelot.Provider.Consul" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />

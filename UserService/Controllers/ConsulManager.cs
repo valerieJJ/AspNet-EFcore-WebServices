@@ -30,7 +30,7 @@ namespace UserService.Controllers
             var check = new AgentServiceCheck()
             {
                 Interval = TimeSpan.FromSeconds(10),
-                HTTP = $"http://{ip}:{port}/health",
+                HTTP = $"http://{ip}:{port}/api/health",
                 Timeout = TimeSpan.FromSeconds(500),
                 DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(6)
             };

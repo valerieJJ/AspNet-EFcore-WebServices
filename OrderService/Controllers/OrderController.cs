@@ -7,7 +7,7 @@ using Neverland.Domain;
 namespace OrderService.Controllers;
 
 [ApiController]
-[Route("[controller]/[action]")]
+[Route("api/[controller]/[action]")]
 public class OrderController : ControllerBase
 {
     private static readonly string[] Summaries = new[]

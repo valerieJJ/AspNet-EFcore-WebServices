@@ -59,10 +59,12 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapGet("/health", () =>
+app.MapGet("/api/health", () =>
 {
     return new OkResult();
 });
+
+
 
 //app.MapHealthChecks("/health");
 
