@@ -1,15 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Neverland.Data;
 using Neverland.Domain;
-using Neverland.Web.Utils; 
-using Neverland.Web.ViewModels;
-using Newtonsoft.Json;
 using Neverland.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Neverland.WebClient.Controllers
 {

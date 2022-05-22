@@ -1,0 +1,18 @@
+﻿@*@model Neverland.Domain.ViewModels.MovieViewModel*@
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <h1>
+        @ViewBag.mvm.Movie.Name
+    </h1>
+    <h2>
+        @ViewBag.mvm.MovieDetail.Description
+    </h2>
+    
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+

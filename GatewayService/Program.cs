@@ -23,7 +23,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseOcelot();
 app.UseConsul();
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

@@ -25,6 +25,14 @@ namespace MovieService.Controllers
         }
 
 
+
+        [HttpGet]
+        private IEnumerable<Movie> Query()
+        {
+            var movies = _context.Movies.ToArray();
+            return movies;
+        }
+
         [HttpGet]
         public async Task<IEnumerable<Movie>> Index()
         {

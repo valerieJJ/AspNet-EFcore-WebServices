@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'nginx' " />
+  <ItemGroup>
+    <None Remove="nginxConf\" />
+    <None Remove="folder\" />
+    <None Remove="nginx\html\" />
+    <None Remove="nginx\docker\" />
+    <None Remove="nginx\conf\conf.d\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Configurationsss\" />
+    <Folder Include="nginx\" />
+    <Folder Include="nginx\conf\" />
+    <Folder Include="nginx\html\" />
+    <Folder Include="nginx\docker\" />
+    <Folder Include="nginx\conf\conf.d\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="Properties\nginxconf.json">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Properties\nginxconf.conf">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+</Project>

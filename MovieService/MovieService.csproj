@@ -24,6 +24,12 @@
     <ProjectReference Include="..\Data\Neverland.Data.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+    <ProjectReference Include="..\Services\Neverland.Services.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+    <ProjectReference Include="..\Interface\Neverland.Interface.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Remove="Pomelo.EntityFrameworkCore.MySql" />
@@ -33,6 +39,7 @@
     <None Remove="Youshow.Ace.MicroService.Consul" />
     <None Remove="Ocelot" />
     <None Remove="Utils\" />
+    <None Remove="Properties\nginx\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Utils\" />

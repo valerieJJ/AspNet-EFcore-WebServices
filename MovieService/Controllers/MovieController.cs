@@ -31,21 +31,17 @@ public class MovieController : ControllerBase
         return movies;
     }
 
-    [HttpGet]
-    private IEnumerable<Movie> Query()
-    {
-        var movies = _context.Movies.ToArray();
-        return movies;
-    }
-
-    [HttpGet]
-    private MovieViewModel QueryMovie(int mid)
+    [HttpGet("{mid}")]
+    public MovieViewModel QueryMovie(int mid)
     {
         var movie = _context.Movies.Where(m => m.Id == mid).FirstOrDefault();
         var movieDetail = _context.MovieDetails.Where(m => m.MovieId == mid).FirstOrDefault();
         var movieScore = _context.MovieScores.Where(m => m.MovieId == mid).FirstOrDefault();
+        movieDetail.Movie = null;
+        movieScore.Movie = null;
         movie.MovieDetail = movieDetail;
         movie.MovieScore = movieScore;
+
 
         MovieViewModel movieViewModel = new MovieViewModel
         {
@@ -58,14 +54,15 @@ public class MovieController : ControllerBase
 
 
     // GET: MovieController/Details/5
-    [HttpGet]
+    [HttpGet("{mid}")]
     public MovieDetail GetDetail(int mid)
     {
         var movieDetail = _context.MovieDetails.Where(x => x.MovieId == mid).FirstOrDefault();
         return movieDetail;
     }
 
-    [HttpGet]
+    //[HttpGet]
+    [HttpGet("{id}")]
     public Movie GetMovie(int id)
     {
         Movie movie = _context.Movies.Where(x => x.Id==id).FirstOrDefault();
@@ -87,7 +84,7 @@ public class MovieController : ControllerBase
     }
 
     // GET: MovieController/Details/5
-    [HttpGet]
+    [HttpGet("{id}")]
     [MovieResourceFilterAttribute]
     public async Task<MovieViewModel> GetMovieViewModel(int id)
     {
@@ -95,9 +92,10 @@ public class MovieController : ControllerBase
 
         Movie movie = _context.Movies.Where(x => x.Id == id).FirstOrDefault();
         var movieDetail = _context.MovieDetails.Where(x => x.MovieId == id).FirstOrDefault();
-
+        
         var movieScore = _context.MovieScores.Where(m => m.MovieId == id).FirstOrDefault(); // _context.MovieScores.Where(x => x.MovieId == id).FirstOrDefault();
-
+        movieDetail.Movie = null;
+        movieScore.Movie = null;
 
         var movieViewModel = new MovieViewModel
         {

@@ -17,11 +17,11 @@ builder.Services.AddDbContext<DataContext>(
     options => options.UseMySql(mysqlconn, MySqlServerVersion.AutoDetect(mysqlconn)) //options => options.UseSqlServer("Data Source=localhost;Initial Catalog=MyDB;Integrated Security=True")
     );
 
-builder.Services.AddSingleton<IConsulClient>(c => new ConsulClient(
-    cc =>
-    {
-        cc.Address = new Uri("http://localhost:8500");
-    }));
+//builder.Services.AddSingleton<IConsulClient>(c => new ConsulClient(
+//    cc =>
+//    {
+//        cc.Address = new Uri("http://localhost:8500");
+//    }));
 
 string redisconn = configuration.GetConnectionString("ECS-Redis");//"Azure-Redis"
 builder.Services.AddDistributedRedisCache(optioins =>
@@ -74,6 +74,7 @@ if (app.Environment.IsDevelopment())
 app.UseSession();
 
 app.UseConsul();
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

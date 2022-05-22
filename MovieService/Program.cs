@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Neverland.Data;
 using MovieService.Controllers;
+using Interface;
+using Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,10 +12,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-//builder.Services.AddSingleton<IConsulClient>(c => new ConsulClient(
+//builder.Services.AddSingleton<IConsulClient, ConsulClient>(c => new ConsulClient(
 //    cc =>
 //    {
-//        cc.Address = new Uri("http://localhost:8500");
+//        cc.Address = new Uri("http://192.168.43.99:8500");
 //    }));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -44,6 +46,9 @@ builder.Services.AddSession(options =>
 });
 
 
+builder.Services.AddTransient<IMovieService, MovieServiceImp>();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -54,7 +59,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseConsul();
-app.UseHttpsRedirection();
+
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

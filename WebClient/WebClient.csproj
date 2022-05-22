@@ -13,12 +13,14 @@
     <None Remove="Newtonsoft.Json" />
     <None Remove="StackExchange.Redis" />
     <None Remove="Views\User\" />
+    <None Remove="Consul" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="2.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="StackExchange.Redis" Version="2.5.61" />
+    <PackageReference Include="Consul" Version="1.6.10.5" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\User\" />
@@ -28,6 +30,12 @@
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
     <ProjectReference Include="..\Domain\Neverland.Domain.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+    <ProjectReference Include="..\Interface\Neverland.Interface.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+    <ProjectReference Include="..\Services\Neverland.Services.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
   </ItemGroup>

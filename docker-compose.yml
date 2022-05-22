@@ -2,22 +2,35 @@
 
 services:
   orderservice:
-    image: ${DOCKER_REGISTRY-}orderservice
+    image: order
     build:
       context: .
       dockerfile: OrderService/Dockerfile
-
+    environment:
+        - ip=192.168.43.99
+        - port=2009
+    ports:
+        - 2009:2009
 
   movieservice:
-    image: ${DOCKER_REGISTRY-}movieservice
+    image: movie
     build:
       context: .
       dockerfile: MovieService/Dockerfile
+    environment:
+        - ip=192.168.43.99
+        - port=2007
+    ports:
+        - 2007:2007
 
 
   cartservice:
-    image: ${DOCKER_REGISTRY-}cartservice
+    image: cart
     build:
       context: .
       dockerfile: CartService/Dockerfile
-
+    environment:
+        - ip=192.168.43.99
+        - port=2010
+    ports:
+        - 2010:2010

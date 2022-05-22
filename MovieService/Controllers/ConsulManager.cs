@@ -13,7 +13,7 @@ namespace MovieService.Controllers
             IConfiguration config = app.Configuration;
             _consulClient = new ConsulClient(cc =>
             {
-                cc.Address = new Uri("http://localhost:8500");
+                cc.Address = new Uri("http://192.168.43.99:8500");
             });
 
             RegisterServer(config);

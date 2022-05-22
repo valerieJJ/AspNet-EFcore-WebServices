@@ -32,8 +32,15 @@
                 <td>@movie.ShootDate</td>
                 <td>@movie.Language</td>
                 <td class="txt-left">
-                    <a asp-action="Details" asp-route-Id="@movie.Id">Detail</a> &nbsp; 
-                    <a asp-controller="Movie" asp-action="Edit"asp-route-id="@movie.Id">edit</a>
+
+
+                    @*stumanage/{controller}/{action}/{id}*@
+                    @*var url = "@Url.Action("Details", "Movie", new { id = movie.Id })"*@
+                    <a href=" javascript:;" id="btn_add" class="weui-btn weui-btn_mini weui-btn_primary"
+                       data-request-url="@Url.Action("Details", "Movie", new { id = movie.Id })/">details</a>
+
+                    <a asp-action="Details" asp-route-Id="@movie.Id">Detail</a> &nbsp;
+                    <a asp-controller="Movie" asp-action="Edit" asp-route-id="@movie.Id">edit</a>
                 </td>
             </tr>
         }

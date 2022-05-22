@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CartService.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     public class CartController : Controller
     {
         // GET: api/values
@@ -22,7 +22,7 @@ namespace CartService.Controllers
         [HttpGet("{id}")]
         public string Get(int id)
         {
-            return "movie1";
+            return "get - movie1";
         }
 
         // POST api/values
